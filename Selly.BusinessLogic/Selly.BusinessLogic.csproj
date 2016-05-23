@@ -40,6 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ClientCore.cs" />
+    <Compile Include="Core\CurrencyCore.cs" />
+    <Compile Include="Core\OrderCore.cs" />
+    <Compile Include="Core\OrderItemCore.cs" />
+    <Compile Include="Core\PayrollCore.cs" />
+    <Compile Include="Core\ProductCore.cs" />
+    <Compile Include="Core\VatCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
