@@ -1,6 +1,0 @@
-﻿CREATE TABLE [dbo].[SaleTypes] (
-    [Id]   UNIQUEIDENTIFIER NOT NULL,
-    [Name] NVARCHAR (200)   NOT NULL,
-    CONSTRAINT [PK_SaleTypes] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-

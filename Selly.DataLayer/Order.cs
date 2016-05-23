@@ -24,16 +24,15 @@ namespace Selly.DataLayer
     
         public System.Guid Id { get; set; }
         public System.Guid ClientId { get; set; }
-        public System.Guid SaleTypeId { get; set; }
         public System.Guid CurrencyId { get; set; }
         public System.DateTime Date { get; set; }
+        public int SaleType { get; set; }
         public int Status { get; set; }
     
         public virtual Client Client { get; set; }
         public virtual Currency Currency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public virtual SaleType SaleType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payroll> Payrolls { get; set; }
     }
