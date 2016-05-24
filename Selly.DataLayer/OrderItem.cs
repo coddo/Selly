@@ -19,8 +19,9 @@ namespace Selly.DataLayer
         public System.Guid OrderId { get; set; }
         public System.Guid ProductId { get; set; }
         public double Quantity { get; set; }
+        public double Price { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
     }
 }
