@@ -7,24 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Selly.DataLayer
+namespace Selly.Models
 {
     using System;
     using System.Collections.Generic;
-    using Selly.DataLayer.Interfaces;
+    using Selly.Models.Interfaces;
     
-    public partial class Currency : IDataAccessObject
+    public partial class Client : IModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Currency()
+        public Client()
         {
+            this.Payrolls = new HashSet<Payroll>();
             this.Orders = new HashSet<Order>();
         }
     
         public System.Guid Id { get; set; }
-        public string Name { get; set; }
-        public double Value { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payroll> Payrolls { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
     }

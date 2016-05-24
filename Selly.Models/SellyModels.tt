@@ -2,7 +2,7 @@
 <#@ include file="EF6.Utility.CS.ttinclude"#><#@ 
  output extension=".cs"#><#
 
-const string inputFile = @"SellyEntityModel.edmx";
+const string inputFile = @"..\Selly.DataLayer\SellyEntityModel.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
 var code = new CodeGenerationTools(this);
 var ef = new MetadataTools(this);
@@ -315,7 +315,7 @@ public class CodeStringGenerator
     {
         return string.Format(
             CultureInfo.InvariantCulture,
-            "{0} {1}partial class {2}{3} : IDataAccessObject",
+            "{0} {1}partial class {2}{3} : IModel",
             Accessibility.ForType(entity),
             _code.SpaceAfter(_code.AbstractOption(entity)),
             _code.Escape(entity),
@@ -429,7 +429,7 @@ public class CodeStringGenerator
                 "{2}{3}",
                 inHeader ? Environment.NewLine : "",
                 includeCollections ? (Environment.NewLine + "using System.Collections.Generic;") : "",
-					 Environment.NewLine + "using Selly.DataLayer.Interfaces;",
+					 Environment.NewLine + "using Selly.Models.Interfaces;",
                 inHeader ? "" : Environment.NewLine)
             : "";
     }

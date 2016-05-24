@@ -7,29 +7,33 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Selly.DataLayer
+namespace Selly.Models
 {
     using System;
     using System.Collections.Generic;
-    using Selly.DataLayer.Interfaces;
+    using Selly.Models.Interfaces;
     
-    public partial class Client : IDataAccessObject
+    public partial class Order : IModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Client()
+        public Order()
         {
             this.Payrolls = new HashSet<Payroll>();
-            this.Orders = new HashSet<Order>();
+            this.OrderItems = new HashSet<OrderItem>();
         }
     
         public System.Guid Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public System.Guid ClientId { get; set; }
+        public System.Guid CurrencyId { get; set; }
+        public System.DateTime Date { get; set; }
+        public int SaleType { get; set; }
+        public int Status { get; set; }
     
+        public virtual Client Client { get; set; }
+        public virtual Currency Currency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payroll> Payrolls { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

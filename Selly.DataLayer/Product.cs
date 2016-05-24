@@ -13,7 +13,7 @@ namespace Selly.DataLayer
     using System.Collections.Generic;
     using Selly.DataLayer.Interfaces;
     
-    public partial class Product : IEntity
+    public partial class Product : IDataAccessObject
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
@@ -27,8 +27,8 @@ namespace Selly.DataLayer
         public double Quantity { get; set; }
         public double Price { get; set; }
     
+        public virtual ValueAddedTax ValueAddedTax { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public virtual ValueAddedTax ValueAddedTax { get; set; }
     }
 }

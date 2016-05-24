@@ -7,25 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Selly.DataLayer
+namespace Selly.Models
 {
     using System;
     using System.Collections.Generic;
-    using Selly.DataLayer.Interfaces;
+    using Selly.Models.Interfaces;
     
-    public partial class Currency : IDataAccessObject
+    public partial class Product : IModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Currency()
+        public Product()
         {
-            this.Orders = new HashSet<Order>();
+            this.OrderItems = new HashSet<OrderItem>();
         }
     
         public System.Guid Id { get; set; }
+        public System.Guid VatId { get; set; }
         public string Name { get; set; }
-        public double Value { get; set; }
+        public double Quantity { get; set; }
+        public double Price { get; set; }
     
+        public virtual ValueAddedTax ValueAddedTax { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

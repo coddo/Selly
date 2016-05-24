@@ -7,21 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Selly.DataLayer
+namespace Selly.Models
 {
     using System;
     using System.Collections.Generic;
-    using Selly.DataLayer.Interfaces;
+    using Selly.Models.Interfaces;
     
-    public partial class Payroll : IDataAccessObject
+    public partial class OrderItem : IModel
     {
         public System.Guid Id { get; set; }
-        public System.Guid ClientId { get; set; }
         public System.Guid OrderId { get; set; }
-        public System.DateTime Date { get; set; }
-        public double Value { get; set; }
+        public System.Guid ProductId { get; set; }
+        public double Quantity { get; set; }
+        public double Price { get; set; }
     
-        public virtual Client Client { get; set; }
         public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

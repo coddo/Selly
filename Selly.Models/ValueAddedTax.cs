@@ -7,21 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Selly.DataLayer
+namespace Selly.Models
 {
     using System;
     using System.Collections.Generic;
-    using Selly.DataLayer.Interfaces;
+    using Selly.Models.Interfaces;
     
-    public partial class Payroll : IDataAccessObject
+    public partial class ValueAddedTax : IModel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ValueAddedTax()
+        {
+            this.Products = new HashSet<Product>();
+        }
+    
         public System.Guid Id { get; set; }
-        public System.Guid ClientId { get; set; }
-        public System.Guid OrderId { get; set; }
-        public System.DateTime Date { get; set; }
         public double Value { get; set; }
     
-        public virtual Client Client { get; set; }
-        public virtual Order Order { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

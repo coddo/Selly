@@ -57,7 +57,7 @@
     <Compile Include="Currency.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IDataAccessObject.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>

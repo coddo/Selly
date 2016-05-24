@@ -9,7 +9,7 @@ using Selly.DataLayer.Interfaces;
 namespace Selly.DataLayer.Repositories.Base
 {
     public abstract class GenericDataRepository<T> : IDisposable
-        where T : class, IEntity, new()
+        where T : class, IDataAccessObject, new()
     {
         private readonly DbSet<T> mDbSet;
 
