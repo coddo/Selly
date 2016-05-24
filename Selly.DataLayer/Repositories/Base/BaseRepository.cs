@@ -7,7 +7,7 @@ using Selly.DataLayer.Interfaces;
 namespace Selly.DataLayer.Repositories.Base
 {
     public abstract class BaseRepository<T> : GenericDataRepository<T>
-        where T : class, IEntity, new()
+        where T : class, IDataAccessObject, new()
     {
         public virtual async Task<IList<T>> GetAllAsync(IList<string> navigationProperties = null)
         {

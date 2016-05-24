@@ -13,7 +13,7 @@ namespace Selly.DataLayer
     using System.Collections.Generic;
     using Selly.DataLayer.Interfaces;
     
-    public partial class Payroll : IEntity
+    public partial class Payroll : IDataAccessObject
     {
         public System.Guid Id { get; set; }
         public System.Guid ClientId { get; set; }

@@ -13,7 +13,7 @@ namespace Selly.DataLayer
     using System.Collections.Generic;
     using Selly.DataLayer.Interfaces;
     
-    public partial class OrderItem : IEntity
+    public partial class OrderItem : IDataAccessObject
     {
         public System.Guid Id { get; set; }
         public System.Guid OrderId { get; set; }
