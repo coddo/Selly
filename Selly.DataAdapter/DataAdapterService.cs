@@ -24,7 +24,13 @@ namespace Selly.DataAdapter
 
             var mapperConfiguration = new MapperConfiguration(config =>
             {
-                
+                DasConfigurator.ConfigureClients(config);
+                DasConfigurator.ConfigureCurrencies(config);
+                DasConfigurator.ConfigureOrders(config);
+                DasConfigurator.ConfigureOrderItems(config);
+                DasConfigurator.ConfigurePayrolls(config);
+                DasConfigurator.ConfigureProducts(config);
+                DasConfigurator.ConfigureVats(config);
             });
 
             mapperConfiguration.AssertConfigurationIsValid();
