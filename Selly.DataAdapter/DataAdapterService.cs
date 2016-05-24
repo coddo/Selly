@@ -5,7 +5,7 @@ using Selly.Models.Interfaces;
 
 namespace Selly.DataAdapter
 {
-    internal static class DataAdapterService
+    public static class DataAdapterService
     {
         private static IMapper mMapper;
         private static bool mIsConfigured;
