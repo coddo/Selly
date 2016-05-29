@@ -22,6 +22,8 @@ namespace Selly.DataLayer.Repositories.Base
             mDbSet = Context.Set<T>();
 
             IsEntityTrackingOn = isEntityTrackingOn;
+
+            context.Configuration.LazyLoadingEnabled = false;
         }
 
         protected Entities Context { get; }
