@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class OrderItemCore : BaseCore<OrderItemRepository, Models.OrderItem, DataLayer.OrderItem>
     {
-        private static OrderItemCore mInstance;
+        private OrderItemCore()
+        {
+        }
 
-        public static OrderItemCore Instance => mInstance ?? (mInstance = new OrderItemCore());
+        public static OrderItemCore Instance => new OrderItemCore();
     }
 }

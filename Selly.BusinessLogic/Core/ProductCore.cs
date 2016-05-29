@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class ProductCore : BaseCore<ProductRepository, Models.Product, DataLayer.Product>
     {
-        private static ProductCore mInstance;
+        private ProductCore()
+        {
+        }
 
-        public static ProductCore Instance => mInstance ?? (mInstance = new ProductCore());
+        public static ProductCore Instance => new ProductCore();
     }
 }

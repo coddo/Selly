@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class PayrollCore : BaseCore<PayrollRepository, Models.Payroll, DataLayer.Payroll>
     {
-        private static PayrollCore mInstance;
+        private PayrollCore()
+        {
+        }
 
-        public static PayrollCore Instance => mInstance ?? (mInstance = new PayrollCore());
+        public static PayrollCore Instance => new PayrollCore();
     }
 }
