@@ -8,7 +8,7 @@ using Selly.DataLayer.Interfaces;
 
 namespace Selly.DataLayer.Repositories.Base
 {
-    public abstract class GenericDataRepository<T> : IDisposable
+    public abstract class GenericDataRepository<T> : BaseDataRepository
         where T : class, IDataAccessObject, new()
     {
         private bool mIsEntityTrackingOn;
@@ -16,17 +16,12 @@ namespace Selly.DataLayer.Repositories.Base
 
         private readonly DbSet<T> mDbSet;
 
-        protected internal GenericDataRepository(Entities context, bool isEntityTrackingOn)
+        protected GenericDataRepository(Entities context, bool isEntityTrackingOn) : base(context)
         {
-            Context = context;
             mDbSet = Context.Set<T>();
 
             IsEntityTrackingOn = isEntityTrackingOn;
-
-            context.Configuration.LazyLoadingEnabled = false;
         }
-
-        protected Entities Context { get; }
 
         public bool IsEntityTrackingOn
         {
@@ -35,7 +30,7 @@ namespace Selly.DataLayer.Repositories.Base
             {
                 mIsEntityTrackingOn = value;
 
-                mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>) GenerateQuery : GenerateNonTrackingQuery;
+                mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>)GenerateQuery : GenerateNonTrackingQuery;
             }
         }
 
@@ -146,15 +141,6 @@ namespace Selly.DataLayer.Repositories.Base
             }
 
             return dbQuery;
-        }
-
-        #endregion
-
-        #region Disposing logic
-
-        public void Dispose()
-        {
-            Context.Dispose();
         }
 
         #endregion
