@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class VatCore : BaseCore<VatRepository, Models.ValueAddedTax, DataLayer.ValueAddedTax>
     {
-        private static VatCore mInstance;
+        private VatCore()
+        {
+        }
 
-        public static VatCore Instance => mInstance ?? (mInstance = new VatCore());
+        public static VatCore Instance => new VatCore();
     }
 }

@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class ClientCore : BaseCore<ClientRepository, Models.Client, DataLayer.Client>
     {
-        private static ClientCore mInstance;
+        private ClientCore()
+        {
+        }
 
-        public static ClientCore Instance => mInstance ?? (mInstance = new ClientCore());
+        public static ClientCore Instance => new ClientCore();
     }
 }

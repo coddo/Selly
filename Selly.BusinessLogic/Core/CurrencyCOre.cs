@@ -5,8 +5,10 @@ namespace Selly.BusinessLogic.Core
 {
     public class CurrencyCore : BaseCore<CurrencyRepository, Models.Currency, DataLayer.Currency>
     {
-        private static CurrencyCore mInstance;
+        private CurrencyCore()
+        {
+        }
 
-        public static CurrencyCore Instance => mInstance ?? (mInstance = new CurrencyCore());
+        public static CurrencyCore Instance => new CurrencyCore();
     }
 }
