@@ -11,19 +11,35 @@ namespace Selly.DataLayer.Repositories.Base
     public abstract class GenericDataRepository<T> : IDisposable
         where T : class, IDataAccessObject, new()
     {
+        private bool mIsEntityTrackingOn;
+        private Func<IList<string>, IQueryable<T>> mQueryGenerator;
+
         private readonly DbSet<T> mDbSet;
 
-        protected GenericDataRepository()
+        protected internal GenericDataRepository(Entities context, bool isEntityTrackingOn)
         {
-            Context = new Entities();
+            Context = context;
             mDbSet = Context.Set<T>();
+
+            IsEntityTrackingOn = isEntityTrackingOn;
         }
 
         protected Entities Context { get; }
 
+        public bool IsEntityTrackingOn
+        {
+            get { return mIsEntityTrackingOn; }
+            set
+            {
+                mIsEntityTrackingOn = value;
+
+                mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>) GenerateQuery : GenerateNonTrackingQuery;
+            }
+        }
+
         protected async Task<IList<T>> FetchAllAsync(IList<string> navigationProperties = null)
         {
-            var dbQuery = GenerateQuery(navigationProperties);
+            var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
             var list = await dbQuery.ToListAsync();
             return list;
@@ -31,7 +47,7 @@ namespace Selly.DataLayer.Repositories.Base
 
         protected async Task<IList<T>> FetchListAsync(Expression<Func<T, bool>> where, IList<string> navigationProperties = null)
         {
-            var dbQuery = GenerateQuery(navigationProperties);
+            var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
             var list = await dbQuery.Where(@where).ToListAsync();
 
@@ -40,7 +56,7 @@ namespace Selly.DataLayer.Repositories.Base
 
         protected async Task<T> FetchSingleAsync(Expression<Func<T, bool>> where, IList<string> navigationProperties = null)
         {
-            var dbQuery = GenerateQuery(navigationProperties);
+            var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
             var item = await dbQuery.FirstOrDefaultAsync(@where);
 
@@ -84,6 +100,7 @@ namespace Selly.DataLayer.Repositories.Base
             }
 
             Context.Configuration.AutoDetectChangesEnabled = true;
+
             await Context.SaveChangesAsync();
 
             return items;
@@ -104,6 +121,13 @@ namespace Selly.DataLayer.Repositories.Base
         }
 
         #region Private methods
+
+        private IQueryable<T> GenerateNonTrackingQuery(IList<string> navigationProperties)
+        {
+            IQueryable<T> dbQuery = mDbSet.AsNoTracking();
+
+            return ApplyNavigationProperties(dbQuery, navigationProperties);
+        }
 
         private IQueryable<T> GenerateQuery(IList<string> navigationProperties)
         {

@@ -9,6 +9,14 @@ namespace Selly.DataLayer.Repositories.Base
     public abstract class BaseRepository<T> : GenericDataRepository<T>
         where T : class, IDataAccessObject, new()
     {
+        protected internal BaseRepository() : base(new Entities(), false)
+        {
+        }
+
+        protected internal BaseRepository(Entities context) : base(context, true)
+        {
+        }
+
         public virtual async Task<IList<T>> GetAllAsync(IList<string> navigationProperties = null)
         {
             return await FetchAllAsync(navigationProperties);
