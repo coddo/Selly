@@ -7,14 +7,37 @@ namespace Selly.DataLayer
 {
     public class DataLayerUnitOfWork : IDisposable
     {
-        private static readonly IDictionary<Type, Func<BaseDataRepository>> mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
-        {
-            {
-                typeof (ClientRepository), () => new ClientRepository()
-            }
-        };
+        private static readonly IDictionary<Type, Func<BaseDataRepository>> mRepositories;
 
         private Entities mContext;
+
+        static DataLayerUnitOfWork()
+        {
+            mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
+            {
+                {
+                    typeof (ClientRepository), () => new ClientRepository()
+                },
+                {
+                    typeof (CurrencyRepository), () => new CurrencyRepository()
+                },
+                {
+                    typeof (OrderItemRepository), () => new OrderItemRepository()
+                },
+                {
+                    typeof (OrderRepository), () => new OrderRepository()
+                },
+                {
+                    typeof (PayrollRepository), () => new PayrollRepository()
+                },
+                {
+                    typeof (ProductRepository), () => new ProductRepository()
+                },
+                {
+                    typeof (VatRepository), () => new VatRepository()
+                }
+            };
+        }
 
         public DataLayerUnitOfWork()
         {
@@ -45,7 +68,7 @@ namespace Selly.DataLayer
 
         public static T Repository<T>() where T : BaseDataRepository
         {
-            var type = typeof(T);
+            var type = typeof (T);
             if (!mRepositories.ContainsKey(type))
             {
                 return null;
