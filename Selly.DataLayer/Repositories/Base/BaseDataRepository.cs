@@ -2,15 +2,24 @@
 
 namespace Selly.DataLayer.Repositories.Base
 {
-    public class BaseDataRepository : IDisposable
+    public abstract class BaseDataRepository : IDisposable
     {
-        protected BaseDataRepository(Entities context)
-        {
-            Context = context;
-            Context.Configuration.LazyLoadingEnabled = false;
-        }
+        private Entities mContext;
 
-        protected Entities Context { get; }
+        protected internal abstract bool IsEntityTrackingOn { get; set; }
+
+        protected internal virtual Entities Context
+        {
+            get
+            {
+                return mContext;
+            }
+            set
+            {
+                value.Configuration.LazyLoadingEnabled = false;
+                mContext = value;
+            }
+        }
 
         #region Disposing logic
 

@@ -14,16 +14,15 @@ namespace Selly.DataLayer.Repositories.Base
         private bool mIsEntityTrackingOn;
         private Func<IList<string>, IQueryable<T>> mQueryGenerator;
 
-        private readonly DbSet<T> mDbSet;
+        private DbSet<T> mDbSet;
 
-        protected GenericDataRepository(Entities context, bool isEntityTrackingOn) : base(context)
+        protected GenericDataRepository()
         {
-            mDbSet = Context.Set<T>();
-
-            IsEntityTrackingOn = isEntityTrackingOn;
+            Context = new Entities();
+            IsEntityTrackingOn = false;
         }
 
-        public bool IsEntityTrackingOn
+        protected internal sealed override bool IsEntityTrackingOn
         {
             get { return mIsEntityTrackingOn; }
             set
@@ -31,6 +30,17 @@ namespace Selly.DataLayer.Repositories.Base
                 mIsEntityTrackingOn = value;
 
                 mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>)GenerateQuery : GenerateNonTrackingQuery;
+            }
+        }
+
+        protected internal sealed override Entities Context
+        {
+            get { return base.Context; }
+            set
+            {
+                base.Context = value;
+
+                mDbSet = value.Set<T>();
             }
         }
 
