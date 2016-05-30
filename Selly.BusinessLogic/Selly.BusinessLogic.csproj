@@ -49,6 +49,7 @@
     <Compile Include="Core\ProductCore.cs" />
     <Compile Include="Core\VatCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selly.DataAdapter\Selly.DataAdapter.csproj">

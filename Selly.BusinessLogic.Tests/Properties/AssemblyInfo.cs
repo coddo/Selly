@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TimerUtil")]
+[assembly: AssemblyTitle("Selly.BusinessLogic.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TimerUtil")]
+[assembly: AssemblyProduct("Selly.BusinessLogic.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bfe85d62-7ee0-4f48-82e7-80b8d57ceb6c")]
+[assembly: Guid("f2d41209-fb7d-447b-ba4a-caf1af60af9f")]
 
 // Version information for an assembly consists of the following four values:
 //

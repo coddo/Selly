@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TimerUtil
+namespace Selly.BusinessLogic.Utility
 {
     public class Timer
     {
