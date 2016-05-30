@@ -207,6 +207,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -248,9 +249,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -293,6 +291,14 @@
     <ProjectReference Include="..\Selly.BusinessLogic\Selly.BusinessLogic.csproj">
       <Project>{38fab177-90a5-4e8b-b82f-ec4a27056984}</Project>
       <Name>Selly.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selly.DataLayer\Selly.DataLayer.csproj">
+      <Project>{c1a53895-b4aa-4a3f-9e9b-8559abb634f4}</Project>
+      <Name>Selly.DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selly.Models\Selly.Models.csproj">
+      <Project>{AF1D1A35-E9C1-41D4-8701-C1A93A25DBD3}</Project>
+      <Name>Selly.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
