@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
-using Owin;
-
-[assembly: OwinStartup(typeof(Selly.Website.Startup))]
+﻿using Owin;
 
 namespace Selly.Website
 {
@@ -12,7 +6,6 @@ namespace Selly.Website
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
         }
     }
 }

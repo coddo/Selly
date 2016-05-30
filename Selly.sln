@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{9F9DC9A1-5EAD-49E0-832F-B48A23C03265}"
 EndProject
@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selly.Website", "Selly.Webs
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A14F4BFA-F76B-4273-BF9C-606FD96A82B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sally.BusinessLogic.Tests", "Sally.BusinessLogic.Tests\Sally.BusinessLogic.Tests.csproj", "{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selly.BusinessLogic.Tests", "Selly.BusinessLogic.Tests\Selly.BusinessLogic.Tests.csproj", "{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

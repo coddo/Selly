@@ -8,7 +8,5 @@ namespace Selly.BusinessLogic.Core
         private OrderCore()
         {
         }
-
-        public static OrderCore Instance => new OrderCore();
     }
 }

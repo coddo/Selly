@@ -8,7 +8,5 @@ namespace Selly.BusinessLogic.Core
         private CurrencyCore()
         {
         }
-
-        public static CurrencyCore Instance => new CurrencyCore();
     }
 }

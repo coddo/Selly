@@ -20,7 +20,7 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="Value" Type="float" Nullable="false" />
+          <Property Name="Multiplier" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -206,15 +206,6 @@
           <NavigationProperty Name="Payrolls" Relationship="Self.FK_Payrolls_Clients" FromRole="Clients" ToRole="Payrolls" />
           <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Clients" FromRole="Client" ToRole="Order" />
         </EntityType>
-        <EntityType Name="Currency">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Value" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Currency" ToRole="Order" />
-        </EntityType>
         <EntityType Name="Payroll">
           <Key>
             <PropertyRef Name="Id" />
@@ -273,7 +264,6 @@
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Clients" EntityType="Self.Client" />
-          <EntitySet Name="Currencys" EntityType="Self.Currency" />
           <EntitySet Name="Payrolls" EntityType="Self.Payroll" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ValueAddedTaxes" EntityType="Self.ValueAddedTax" />
@@ -290,10 +280,6 @@
             <End Role="Client" EntitySet="Clients" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_Currencies" Association="SellyModel.FK_Orders_Currencies">
-            <End Role="Currency" EntitySet="Currencys" />
-            <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK_Payrolls_Orders" Association="SellyModel.FK_Payrolls_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Payroll" EntitySet="Payrolls" />
@@ -307,6 +293,11 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderItem" EntitySet="OrderItems" />
           </AssociationSet>
+          <EntitySet Name="Currencys" EntityType="SellyModel.Currency" />
+          <AssociationSet Name="FK_Orders_Currencies" Association="SellyModel.FK_Orders_Currencies">
+            <End Role="Currency" EntitySet="Currencys" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Order">
           <Key>
@@ -319,9 +310,9 @@
           <Property Name="SaleType" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Client" Relationship="SellyModel.FK_Orders_Clients" FromRole="Order" ToRole="Client" />
-          <NavigationProperty Name="Currency" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Order" ToRole="Currency" />
           <NavigationProperty Name="Payrolls" Relationship="SellyModel.FK_Payrolls_Orders" FromRole="Order" ToRole="Payroll" />
           <NavigationProperty Name="OrderItems" Relationship="SellyModel.FK_OrderItems_Orders" FromRole="Order" ToRole="OrderItem" />
+          <NavigationProperty Name="Currency" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Order" ToRole="Currency" />
         </EntityType>
         <Association Name="FK_Orders_Clients">
           <End Type="SellyModel.Client" Role="Client" Multiplicity="1" />
@@ -332,18 +323,6 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="ClientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_Currencies">
-          <End Type="SellyModel.Currency" Role="Currency" Multiplicity="1" />
-          <End Type="SellyModel.Order" Role="Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Currency">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="CurrencyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -395,6 +374,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Multiplier" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Currency" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK_Orders_Currencies">
+          <End Type="SellyModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="SellyModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -408,15 +408,6 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Currencys">
-            <EntityTypeMapping TypeName="SellyModel.Currency">
-              <MappingFragment StoreEntitySet="Currencys">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -469,6 +460,15 @@
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currencys">
+            <EntityTypeMapping TypeName="SellyModel.Currency">
+              <MappingFragment StoreEntitySet="Currencys">
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

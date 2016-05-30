@@ -44,9 +44,12 @@
     <Compile Include="Client.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\ClientServerInteraction\Response.cs" />
+    <Compile Include="Common\ClientServerInteraction\ResponseFactory.cs" />
     <Compile Include="Currency.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enums\EnumExtensions\EnumExtensions.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>

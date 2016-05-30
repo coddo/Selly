@@ -8,7 +8,5 @@ namespace Selly.BusinessLogic.Core
         private VatCore()
         {
         }
-
-        public static VatCore Instance => new VatCore();
     }
 }

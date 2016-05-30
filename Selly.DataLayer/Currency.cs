@@ -23,7 +23,7 @@ namespace Selly.DataLayer
     
         public System.Guid Id { get; set; }
         public string Name { get; set; }
-        public double Value { get; set; }
+        public double Multiplier { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
