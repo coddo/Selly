@@ -50,12 +50,15 @@ namespace Selly.BusinessLogic.Service
             }).ConfigureAwait(false);
 
             var existingCurrencies = await CurrencyCore.GetAllAsync();
+
             if (existingCurrencies == null || existingCurrencies.Count == 0)
             {
                 await PopulateCurrencies(currencyData).ConfigureAwait(false);
             }
-
-            await UpdateCurrencies(existingCurrencies, currencyData).ConfigureAwait(false);
+            else
+            {
+                await UpdateCurrencies(existingCurrencies, currencyData).ConfigureAwait(false);
+            }
         }
 
         #endregion
