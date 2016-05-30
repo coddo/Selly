@@ -23,10 +23,12 @@ namespace Selly.BusinessLogic.Service
 
         private CurrencyUpdaterService()
         {
-            mTimer = new Timer(TimeSpan.FromHours(1), UpdateCurrencies);
+            mTimer = new Timer(TimeSpan.FromHours(1), RefreshCurrencies);
         }
 
         public static CurrencyUpdaterService Instance => mInstance ?? (mInstance = new CurrencyUpdaterService());
+
+        #region Main service logic
 
         public void StartUpdaterService()
         {
@@ -38,7 +40,7 @@ namespace Selly.BusinessLogic.Service
             mTimer.Stop();
         }
 
-        private static async Task UpdateCurrencies()
+        private static async Task RefreshCurrencies()
         {
             var currencyData = await RestClient.GetAsync<CurrencyModel>(CURRENCY_PROVIDER_BASE_URL, new Dictionary<string, string>
             {
@@ -55,6 +57,10 @@ namespace Selly.BusinessLogic.Service
 
             await UpdateCurrencies(existingCurrencies, currencyData).ConfigureAwait(false);
         }
+
+        #endregion
+
+        #region Auxiliary methods
 
         private static async Task PopulateCurrencies(CurrencyModel currencyData)
         {
@@ -107,6 +113,10 @@ namespace Selly.BusinessLogic.Service
             }
         }
 
+        #endregion
+
+        #region Inline models
+
         public class CurrencyModel
         {
             [JsonProperty("base")]
@@ -118,5 +128,7 @@ namespace Selly.BusinessLogic.Service
             [JsonProperty("rates")]
             public IDictionary<string, double> Rates { get; set; }
         }
+
+        #endregion
     }
 }
