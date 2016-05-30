@@ -218,7 +218,6 @@
     <Folder Include="Models\" />
     <Folder Include="Providers\" />
     <Folder Include="Results\" />
-    <Folder Include="Workers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
