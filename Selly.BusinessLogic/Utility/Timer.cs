@@ -9,9 +9,9 @@ namespace Selly.BusinessLogic.Utility
         private readonly TimeSpan mInterval;
         private bool mIsTimerRunning;
         private CancellationTokenSource mCancellationTokenSource;
-        private readonly Action mTimerCallback;
+        private readonly Func<Task> mTimerCallback;
 
-        public Timer(TimeSpan timerInterval, Action timerCallback)
+        public Timer(TimeSpan timerInterval, Func<Task> timerCallback)
         {
             mInterval = timerInterval;
             mTimerCallback = timerCallback;
@@ -62,14 +62,14 @@ namespace Selly.BusinessLogic.Utility
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(mInterval, cancellationToken).ContinueWith(task => { }).ConfigureAwait(false);
-
                 IsBusy = true;
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    mTimerCallback.Invoke();
+                    await mTimerCallback.Invoke().ConfigureAwait(false);
                 }
                 IsBusy = false;
+
+                await Task.Delay(mInterval, cancellationToken).ContinueWith(task => { }).ConfigureAwait(false);
             }
 
             mIsTimerRunning = false;
