@@ -218,6 +218,7 @@
     <Folder Include="Models\" />
     <Folder Include="Providers\" />
     <Folder Include="Results\" />
+    <Folder Include="Workers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -239,6 +240,10 @@
     <ProjectReference Include="..\Selly.Models\Selly.Models.csproj">
       <Project>{AF1D1A35-E9C1-41D4-8701-C1A93A25DBD3}</Project>
       <Name>Selly.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimerUtil\TimerUtil.csproj">
+      <Project>{bfe85d62-7ee0-4f48-82e7-80b8d57ceb6c}</Project>
+      <Name>TimerUtil</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

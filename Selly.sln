@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{9F9DC9A1-5EAD-49E0-832F-B48A23C03265}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A14F4BFA-F76B-4273-BF9C-606FD96A82B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sally.BusinessLogic.Tests", "Sally.BusinessLogic.Tests\Sally.BusinessLogic.Tests.csproj", "{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{E0BDFB88-512B-429A-86A2-2EAC77291A24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimerUtil", "TimerUtil\TimerUtil.csproj", "{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,10 @@ Global
 		{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +88,6 @@ Global
 		{35A5C14A-9436-4927-9F2B-BB712546F804} = {9F9DC9A1-5EAD-49E0-832F-B48A23C03265}
 		{D6D66039-AF93-4073-B6FB-318497FA6E91} = {F25323D1-436A-4868-ADA9-E12472D9FCB5}
 		{F2D41209-FB7D-447B-BA4A-CAF1AF60AF9F} = {A14F4BFA-F76B-4273-BF9C-606FD96A82B0}
+		{BFE85D62-7EE0-4F48-82E7-80B8D57CEB6C} = {E0BDFB88-512B-429A-86A2-2EAC77291A24}
 	EndGlobalSection
 EndGlobal
