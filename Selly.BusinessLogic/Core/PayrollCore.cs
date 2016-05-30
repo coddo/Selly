@@ -8,7 +8,5 @@ namespace Selly.BusinessLogic.Core
         private PayrollCore()
         {
         }
-
-        public static PayrollCore Instance => new PayrollCore();
     }
 }

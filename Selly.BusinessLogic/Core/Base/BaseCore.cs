@@ -24,7 +24,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public async Task<TModel> GetAsync(Guid id, IList<string> navigationProperties = null)
+        public static async Task<TModel> GetAsync(Guid id, IList<string> navigationProperties = null)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -34,7 +34,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<TModel> CreateAsync(TModel model)
+        public static async Task<TModel> CreateAsync(TModel model)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -46,7 +46,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<IList<TModel>> CreateAsync(IList<TModel> modelCollection)
+        public static async Task<IList<TModel>> CreateAsync(IList<TModel> modelCollection)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -58,7 +58,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<TModel> UpdateAsync(TModel model)
+        public static async Task<TModel> UpdateAsync(TModel model)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -70,7 +70,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<IList<TModel>> UpdateAsync(IList<TModel> modelCollection)
+        public static async Task<IList<TModel>> UpdateAsync(IList<TModel> modelCollection)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -82,7 +82,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<bool> DeleteAsync(TModel model)
+        public static async Task<bool> DeleteAsync(TModel model)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
@@ -92,7 +92,7 @@ namespace Selly.BusinessLogic.Core.Base
             }
         }
 
-        public virtual async Task<bool> DeleteAsync(IList<TModel> modelCollection)
+        public static async Task<bool> DeleteAsync(IList<TModel> modelCollection)
         {
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {

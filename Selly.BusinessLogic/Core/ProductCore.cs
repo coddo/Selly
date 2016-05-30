@@ -8,7 +8,5 @@ namespace Selly.BusinessLogic.Core
         private ProductCore()
         {
         }
-
-        public static ProductCore Instance => new ProductCore();
     }
 }
