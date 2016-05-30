@@ -10,6 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CurrencyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="300" Nullable="false" />
@@ -70,6 +71,18 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Value" Type="float" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Clients_Currencies">
+          <End Role="Currencys" Type="Self.Currencys" Multiplicity="1" />
+          <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currencys">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OrderItems_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
@@ -162,6 +175,10 @@
           <EntitySet Name="Payrolls" EntityType="Self.Payrolls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValueAddedTaxes" EntityType="Self.ValueAddedTaxes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Clients_Currencies" Association="Self.FK_Clients_Currencies">
+            <End Role="Currencys" EntitySet="Currencys" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
           <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderItems" EntitySet="OrderItems" />
@@ -195,17 +212,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SellyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Client">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Payrolls" Relationship="Self.FK_Payrolls_Clients" FromRole="Clients" ToRole="Payrolls" />
-          <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Clients" FromRole="Client" ToRole="Order" />
-        </EntityType>
         <EntityType Name="Payroll">
           <Key>
             <PropertyRef Name="Id" />
@@ -215,8 +221,8 @@
           <Property Name="OrderId" Type="Guid" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Value" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_Payrolls_Clients" FromRole="Payrolls" ToRole="Clients" />
           <NavigationProperty Name="Order" Relationship="SellyModel.FK_Payrolls_Orders" FromRole="Payroll" ToRole="Order" />
+          <NavigationProperty Name="Client" Relationship="SellyModel.FK_Payrolls_Clients" FromRole="Payroll" ToRole="Client" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -238,18 +244,6 @@
           <Property Name="Value" Type="Double" Nullable="false" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Products_Vats" FromRole="ValueAddedTaxes" ToRole="Products" />
         </EntityType>
-        <Association Name="FK_Payrolls_Clients">
-          <End Role="Clients" Type="Self.Client" Multiplicity="1" />
-          <End Role="Payrolls" Type="Self.Payroll" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Clients">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Payrolls">
-              <PropertyRef Name="ClientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Products_Vats">
           <End Role="ValueAddedTaxes" Type="Self.ValueAddedTax" Multiplicity="1" />
           <End Role="Products" Type="Self.Product" Multiplicity="*" />
@@ -263,23 +257,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="Payrolls" EntityType="Self.Payroll" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ValueAddedTaxes" EntityType="Self.ValueAddedTax" />
-          <AssociationSet Name="FK_Payrolls_Clients" Association="Self.FK_Payrolls_Clients">
-            <End Role="Clients" EntitySet="Clients" />
-            <End Role="Payrolls" EntitySet="Payrolls" />
-          </AssociationSet>
           <AssociationSet Name="FK_Products_Vats" Association="Self.FK_Products_Vats">
             <End Role="ValueAddedTaxes" EntitySet="ValueAddedTaxes" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
           <EntitySet Name="Orders" EntityType="SellyModel.Order" />
-          <AssociationSet Name="FK_Orders_Clients" Association="SellyModel.FK_Orders_Clients">
-            <End Role="Client" EntitySet="Clients" />
-            <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK_Payrolls_Orders" Association="SellyModel.FK_Payrolls_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Payroll" EntitySet="Payrolls" />
@@ -298,7 +283,20 @@
             <End Role="Currency" EntitySet="Currencys" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="Clients" EntityType="SellyModel.Client" />
+          <AssociationSet Name="FK_Clients_Currencies" Association="SellyModel.FK_Clients_Currencies">
+            <End Role="Currency" EntitySet="Currencys" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Clients" Association="SellyModel.FK_Orders_Clients">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payrolls_Clients" Association="SellyModel.FK_Payrolls_Clients">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Payroll" EntitySet="Payrolls" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
@@ -309,23 +307,11 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SaleType" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="SellyModel.FK_Orders_Clients" FromRole="Order" ToRole="Client" />
           <NavigationProperty Name="Payrolls" Relationship="SellyModel.FK_Payrolls_Orders" FromRole="Order" ToRole="Payroll" />
           <NavigationProperty Name="OrderItems" Relationship="SellyModel.FK_OrderItems_Orders" FromRole="Order" ToRole="OrderItem" />
           <NavigationProperty Name="Currency" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Order" ToRole="Currency" />
+          <NavigationProperty Name="Client" Relationship="SellyModel.FK_Orders_Clients" FromRole="Order" ToRole="Client" />
         </EntityType>
-        <Association Name="FK_Orders_Clients">
-          <End Type="SellyModel.Client" Role="Client" Multiplicity="1" />
-          <End Type="SellyModel.Order" Role="Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ClientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Payrolls_Orders">
           <End Type="SellyModel.Order" Role="Order" Multiplicity="1" />
           <End Type="SellyModel.Payroll" Role="Payroll" Multiplicity="*" />
@@ -382,6 +368,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Multiplier" Type="Double" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Currencies" FromRole="Currency" ToRole="Order" />
+          <NavigationProperty Name="Clients" Relationship="SellyModel.FK_Clients_Currencies" FromRole="Currency" ToRole="Client" />
         </EntityType>
         <Association Name="FK_Orders_Currencies">
           <End Type="SellyModel.Currency" Role="Currency" Multiplicity="1" />
@@ -395,22 +382,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CurrencyId" Type="Guid" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Currency" Relationship="SellyModel.FK_Clients_Currencies" FromRole="Client" ToRole="Currency" />
+          <NavigationProperty Name="Orders" Relationship="SellyModel.FK_Orders_Clients" FromRole="Client" ToRole="Order" />
+          <NavigationProperty Name="Payrolls" Relationship="SellyModel.FK_Payrolls_Clients" FromRole="Client" ToRole="Payroll" />
+        </EntityType>
+        <Association Name="FK_Clients_Currencies">
+          <End Type="SellyModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="SellyModel.Client" Role="Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Clients">
+          <End Type="SellyModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="SellyModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payrolls_Clients">
+          <End Type="SellyModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="SellyModel.Payroll" Role="Payroll" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payroll">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SellyModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="Clients">
-            <EntityTypeMapping TypeName="SellyModel.Client">
-              <MappingFragment StoreEntitySet="Clients">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Payrolls">
             <EntityTypeMapping TypeName="SellyModel.Payroll">
               <MappingFragment StoreEntitySet="Payrolls">
@@ -469,6 +495,17 @@
               <MappingFragment StoreEntitySet="Currencys">
                 <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="SellyModel.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

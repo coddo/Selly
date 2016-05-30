@@ -19,6 +19,7 @@ namespace Selly.Models
         public Currency()
         {
             this.Orders = new HashSet<Order>();
+            this.Clients = new HashSet<Client>();
         }
     
         public System.Guid Id { get; set; }
@@ -27,5 +28,7 @@ namespace Selly.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Client> Clients { get; set; }
     }
 }
