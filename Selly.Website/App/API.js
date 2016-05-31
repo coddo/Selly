@@ -19,7 +19,7 @@
                 isArray: false
             },
 
-            createUser:{
+            createUser: {
                 url: baseUrl + 'client/Create',
                 method: 'POST',
                 isArray: false
@@ -38,8 +38,22 @@
                 url: baseUrl + 'currency/GetAll',
                 method: 'GET',
                 isArray: false
-            }
-            
+            },
+
+
+            //Orders
+            placeOrder: {
+                url: baseUrl + 'order/Create',
+                method: 'POST',
+                isArray: false
+            },
+
+            //Products
+            getAllProducts: {
+                url: baseUrl + 'product/GetAll',
+                method: 'GET',
+                isArray: false
+            },
 
         });
 
