@@ -9,5 +9,15 @@ namespace Selly.Models.Enums.EnumExtensions
         {
             return (int) statusCode;
         }
+
+        public static int ToInt(this SaleType saleType)
+        {
+            return (int) saleType;
+        }
+
+        public static int ToInt(this OrderStatus orderStatus)
+        {
+            return (int) orderStatus;
+        }
     }
 }

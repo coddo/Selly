@@ -1,4 +1,5 @@
 ﻿using Owin;
+using Selly.BusinessLogic.Service;
 
 namespace Selly.Website
 {
@@ -6,6 +7,8 @@ namespace Selly.Website
     {
         public void Configuration(IAppBuilder app)
         {
+            VatsInitializationService.Instance.InitializeVats();
+            CurrencyUpdaterService.Instance.StartUpdaterService();
         }
     }
 }
