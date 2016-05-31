@@ -42,7 +42,7 @@
 
         function loadCurrencies() {
             HelperService.StartLoading('loadCurrencies');
-            API.getAllClients(function (success) {
+            API.getAllCurrecies(function (success) {
                 $scope.currencies = success.data;
                 HelperService.StopLoading('loadCurrencies');
 
