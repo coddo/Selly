@@ -1,12 +1,14 @@
 ﻿angular
     .module('selly')
-    .controller('ClientController', function ($scope, API, HelperService, $routeParams) {
+    .controller('ClientController', function ($scope, API, HelperService, $routeParams, OrderService) {
 
 
         $scope.client = {};
+        $scope.orders = [];
 
         function init() {
             loadClient($routeParams.clientId);
+            loadOrders($routeParams.clientId);
         }
         init();
 
@@ -26,6 +28,19 @@
         };
 
 
-        
+        function loadOrders(clientId) {
+            OrderService.GetAllOrdersForUser(clientId).then(function (success) {
+                $scope.orders = success.data;
+
+                success.data.forEach(function (order) {
+                    order.total = 0;
+                    order.orderItems.forEach(function (item) {
+                        order.total += item.price * item.quantity;
+                    });
+                });
+            });
+        };
+
+
 
     });

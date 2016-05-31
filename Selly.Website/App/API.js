@@ -47,6 +47,16 @@
                 method: 'POST',
                 isArray: false
             },
+            getAllOrders: {
+                url: baseUrl + 'order/GetAll',
+                method: 'GET',
+                isArray: false
+            },
+            getAllOrdersForUser: {
+                url: baseUrl + 'order/GetAllForUser',
+                method: 'GET',
+                isArray: false
+            },
 
             //Products
             getAllProducts: {

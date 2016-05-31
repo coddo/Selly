@@ -198,6 +198,7 @@
     <Content Include="App\Controllers\ClientsController.js" />
     <Content Include="App\Controllers\IndexController.js" />
     <Content Include="App\Controllers\CreateOrderController.js" />
+    <Content Include="App\Services\OrderService.js" />
     <Content Include="App\Services\HelperService.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

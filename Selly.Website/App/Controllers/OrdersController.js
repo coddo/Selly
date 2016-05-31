@@ -1,31 +1,28 @@
 ﻿angular
     .module('selly')
-    .controller('OrdersController', function ($scope, API, HelperService, $routeParams) {
+    .controller('OrdersController', function ($scope, API, HelperService, OrderService) {
 
 
-        $scope.client = {};
+        $scope.orders = [];
 
         function init() {
-            loadClient($routeParams.clientId);
+            loadOrders();
         }
         init();
 
 
-        function loadClient(clientId) {
-            HelperService.StartLoading('loadClients');
-            API.getClient({ clientId: clientId }, function (success) {
-                $scope.client = success.data;
-                HelperService.StopLoading('loadClients');
+        function loadOrders() {
+            OrderService.GetAllOrders().then(function (success) {
+                $scope.orders = success.data;
 
-                if (!success.isSuccess)
-                    HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
-            }, function (error) {
-                HelperService.StopLoading('loadClients');
-                HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
+                success.data.forEach(function (order) {
+                    order.total = 0;
+                    order.orderItems.forEach(function (item) {
+                        order.total += item.price * item.quantity;
+                    });
+                });
             });
         };
 
-
-        
 
     });
