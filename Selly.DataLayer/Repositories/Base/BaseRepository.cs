@@ -15,16 +15,6 @@ namespace Selly.DataLayer.Repositories.Base
         {
         }
 
-        public async Task<IList<T>> GetListAsync(Expression<Func<T, bool>> query, IList<string> navigationProperties = null)
-        {
-            return await FetchListAsync(query, navigationProperties);
-        }
-
-        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> query, IList<string> navigationProperties = null)
-        {
-            return await FetchSingleAsync(query, navigationProperties);
-        }
-
         public virtual async Task<IList<T>> GetAllAsync(IList<string> navigationProperties = null)
         {
             return await FetchAllAsync(navigationProperties);

@@ -72,7 +72,7 @@ namespace Selly.BusinessLogic.Core
         {
             using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
             {
-                var orders = await orderRepository.GetListAsync(order => order.ClientId == clientId, navigationProperties).ConfigureAwait(false);
+                var orders = await orderRepository.GetByClientId(clientId).ConfigureAwait(false);
 
                 if (orders == null || orders.Count == 0)
                 {
