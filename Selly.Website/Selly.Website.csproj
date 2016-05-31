@@ -187,6 +187,8 @@
   <ItemGroup>
     <Content Include="App\API.js" />
     <Content Include="App\app.js" />
+    <Content Include="App\Controllers\ClientController.js" />
+    <Content Include="App\Controllers\ClientsController.js" />
     <Content Include="App\Controllers\IndexController.js" />
     <Content Include="App\Controllers\CreateOrderController.js" />
     <Content Include="App\Services\HelperService.js" />
@@ -235,7 +237,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Views\Client.html" />
     <Content Include="Views\CreateOrder.html" />
+    <Content Include="Views\Clients.html" />
     <Content Include="Views\Inexistent.html" />
     <Content Include="Views\Index.html" />
     <Content Include="Web.config" />

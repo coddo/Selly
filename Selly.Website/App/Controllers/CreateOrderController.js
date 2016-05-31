@@ -53,6 +53,9 @@
             API.getAllClients(function (success) {
                 $scope.clients = success.data;
                 HelperService.StopLoading('loadClients');
+
+                if (!success.isSuccess)
+                    HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadClients');
                 HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');

@@ -13,6 +13,14 @@
                 templateUrl: '/Views/CreateOrder.html',
                 controller: 'CreateOrderController'
             })
+            .when('/clients', {
+                templateUrl: '/Views/Clients.html',
+                controller: 'ClientsController'
+            })
+            .when('/clients/:clientId', {
+                templateUrl: '/Views/Client.html',
+                controller: 'ClientController'
+            })
             //.when('/scrisoare', {
             //    templateUrl: '/Views/Letter.html',
             //    controller: 'LetterController'

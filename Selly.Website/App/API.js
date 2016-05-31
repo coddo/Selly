@@ -19,6 +19,17 @@
                 isArray: false
             },
 
+            createUser:{
+                url: baseUrl + 'client/Create',
+                method: 'POST',
+                isArray: false
+            },
+
+            getClient: {
+                url: baseUrl + 'client/Get',
+                method: 'GET',
+                isArray: false
+            },
 
 
 

@@ -3,7 +3,18 @@
 }
 
 
-
+/*message*/
+#message {
+    display: none;
+    position: fixed;
+    z-index: 9000;
+    width: auto;
+    height: auto;
+    font-size: 24px;
+    right: 10px;
+    bottom: 10px;
+    font-family: 'Roboto', sans-serif;
+}
 
 /*effects*/
 .loading {
