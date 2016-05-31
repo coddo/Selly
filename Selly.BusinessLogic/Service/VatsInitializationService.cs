@@ -34,7 +34,7 @@ namespace Selly.BusinessLogic.Service
                 }
 
                 await VatCore.CreateAsync(mValueAddedTaxes).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

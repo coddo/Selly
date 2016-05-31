@@ -105,7 +105,7 @@ namespace Selly.BusinessLogic.Service
                 }
 
                 await ClientCore.CreateAsync(mClients).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
