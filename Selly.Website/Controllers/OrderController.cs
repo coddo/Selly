@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -16,7 +17,7 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var result = await OrderCore.GetAllAsync(new[]
+                var result = await OrderCore.GetAllAsync(orderBy, orderAscending, new[]
                 {
                     nameof(Order.Client),
                     nameof(Order.OrderItems)
@@ -26,7 +27,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
 
@@ -46,7 +47,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
 

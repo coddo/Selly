@@ -58,6 +58,7 @@
     <Compile Include="Utility\FloatingPointUtility.cs" />
     <Compile Include="Utility\Timer.cs" />
     <Compile Include="Utility\RestClient.cs" />
+    <Compile Include="Validation\SalesValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selly.DataAdapter\Selly.DataAdapter.csproj">
