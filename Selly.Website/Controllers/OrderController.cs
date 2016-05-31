@@ -20,7 +20,9 @@ namespace Selly.Website.Controllers
                 var result = await OrderCore.GetAllAsync(orderBy, orderAscending, new[]
                 {
                     nameof(Order.Client),
-                    nameof(Order.OrderItems)
+                    nameof(Order.OrderItems),
+                    nameof(Order.Payrolls),
+                    nameof(Order.Currency)
                 }).ConfigureAwait(false);
 
                 return Ok(result);
@@ -40,7 +42,9 @@ namespace Selly.Website.Controllers
                 var result = await OrderCore.GetAllForUserAsync(userId, orderBy, orderAscending, new[]
                 {
                     nameof(Order.Client),
-                    nameof(Order.OrderItems)
+                    nameof(Order.OrderItems),
+                    nameof(Order.Payrolls),
+                    nameof(Order.Currency)
                 }).ConfigureAwait(false);
 
                 return Ok(result);
@@ -112,6 +116,22 @@ namespace Selly.Website.Controllers
             catch (Exception)
             {
                 return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+            }
+        }
+
+        // THIS HAD NO TIME LEFT TO IMPLEMENT
+        [HttpGet]
+        [ActionName("GetInvoice")]
+        public async Task<IHttpActionResult> GetInvoice(Guid orderId)
+        {
+            try
+            {
+                // A PDF/CSV FILE WAS INTENDED TO BE DOWNLOADED BASED ON THE ORDER, ORDERITEMS AND PAYROLL
+                throw new NotImplementedException();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
