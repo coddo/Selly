@@ -35,7 +35,7 @@
                         <span style="float:right" class="btn btn-success" ng-click="addToCart(product)">Add!</span>
 
                         <br />
-                        <b>Price</b>: {{product.price}} LEI
+                        <b>Price</b>: {{product.price}} {{ui.selectedClient.currency.name}}
                         <br />
                         <b>VAT</b>: {{product.valueAddedTax.value}}%
                     </div>
@@ -78,7 +78,7 @@
                 </td>
                 <td>
                     <span ng-hide="product.editing">
-                        {{product.price}} LEI
+                        {{product.price}} {{ui.selectedClient.currency.name}}
                         <br />
                         <button class="btn btn-default btn-sm" ng-click="changePrice(product)">Change price!</button>
                     </span>
@@ -94,7 +94,7 @@
                     {{product.valueAddedTax.value}}%
                 </td>
                 <td>
-                    {{product.valueAddedTax.value * product.price / 100 + product.price}} LEI
+                    {{product.valueAddedTax.value * product.price / 100 + product.price}} {{ui.selectedClient.currency.name}}
                 </td>
                 <td>
                     <button class="btn btn-danger" ng-click="deleteProduct(product)">Delete!</button>
@@ -105,8 +105,8 @@
 
     <div ng-show="ui.selectedProducts!==null && ui.selectedProducts.length>0">
         <hr />
-        <h3>Money paid by client: {{ui.moneyPaidByClient}} LEI (Incl. VAT: {{ui.moneyPaidByClientVAT}} LEI) </h3>
-        <h3>Money paid by us: {{ui.moneyPaidByUs}} LEI (Incl. VAT: {{ui.moneyPaidByUsVAT}} LEI)</h3>
+        <h3>Money paid by client: {{ui.moneyPaidByClient}} {{ui.selectedClient.currency.name}} (Incl. VAT: {{ui.moneyPaidByClientVAT}} {{ui.selectedClient.currency.name}}) </h3>
+        <h3>Money paid by us: {{ui.moneyPaidByUs}} {{ui.selectedClient.currency.name}} (Incl. VAT: {{ui.moneyPaidByUsVAT}} {{ui.selectedClient.currency.name}})</h3>
 
         <hr />
 
