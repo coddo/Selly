@@ -14,7 +14,7 @@ namespace Selly.Website.Controllers
     {
         [HttpGet]
         [ActionName("GetAll")]
-        public async Task<IHttpActionResult> GetAll()
+        public async Task<IHttpActionResult> GetAll(string orderBy = "", bool orderAscending = true)
         {
             try
             {
@@ -29,6 +29,8 @@ namespace Selly.Website.Controllers
                     return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.NoContent));
                 }
 
+                orders = SortOrders(orders, orderBy, orderAscending);
+
                 return Ok(ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, orders));
             }
             catch (Exception)
@@ -39,7 +41,7 @@ namespace Selly.Website.Controllers
 
         [HttpGet]
         [ActionName("GetAllForUser")]
-        public async Task<IHttpActionResult> GetAllForUser(Guid userId)
+        public async Task<IHttpActionResult> GetAllForUser(Guid userId, string orderBy = "", bool orderAscending = true)
         {
             try
             {
@@ -53,6 +55,8 @@ namespace Selly.Website.Controllers
                 {
                     return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.NoContent));
                 }
+
+                orders = SortOrders(orders, orderBy, orderAscending);
 
                 return Ok(ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, orders));
             }
@@ -118,5 +122,41 @@ namespace Selly.Website.Controllers
                 return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
+
+        #region Private methods
+
+        private IList<Order> SortOrders(IList<Order> orders, string orderBy, bool orderAscending)
+        {
+            if (string.IsNullOrEmpty(orderBy))
+            {
+                return orders;
+            }
+
+            Func<Order, object> orderClause;
+            switch (orderBy)
+            {
+                case nameof(Order.ClientId):
+                    orderClause = order => order.ClientId;
+                    break;
+                case nameof(Order.CurrencyId):
+                    orderClause = order => order.CurrencyId;
+                    break;
+                case nameof(Order.Date):
+                    orderClause = order => order.Date;
+                    break;
+                case nameof(Order.SaleType):
+                    orderClause = order => order.SaleType;
+                    break;
+                case nameof(Order.Status):
+                    orderClause = order => order.Status;
+                    break;
+                default:
+                    return orders;
+            }
+
+            return orderAscending ? orders.OrderBy(orderClause).ToArray() : orders.OrderByDescending(orderClause).ToArray();
+        }
+
+        #endregion
     }
 }
