@@ -7,40 +7,22 @@ namespace Selly.DataLayer
 {
     public class DataLayerUnitOfWork : IDisposable
     {
-        private static readonly IDictionary<Type, Func<BaseDataRepository>> mRepositories;
+        private static IDictionary<Type, Func<BaseDataRepository>> mRepositories;
 
         private Entities mContext;
 
         static DataLayerUnitOfWork()
         {
-            mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
-            {
-                {
-                    typeof (ClientRepository), () => new ClientRepository()
-                },
-                {
-                    typeof (CurrencyRepository), () => new CurrencyRepository()
-                },
-                {
-                    typeof (OrderItemRepository), () => new OrderItemRepository()
-                },
-                {
-                    typeof (OrderRepository), () => new OrderRepository()
-                },
-                {
-                    typeof (PayrollRepository), () => new PayrollRepository()
-                },
-                {
-                    typeof (ProductRepository), () => new ProductRepository()
-                },
-                {
-                    typeof (VatRepository), () => new VatRepository()
-                }
-            };
+            InitializeUnitOfWork();
         }
 
         public DataLayerUnitOfWork()
         {
+            if (mRepositories == null)
+            {
+                InitializeUnitOfWork();
+            }
+
             mContext = new Entities();
         }
 
@@ -78,6 +60,38 @@ namespace Selly.DataLayer
         }
 
         #endregion
+
+        #region Initialization
+
+        private static void InitializeUnitOfWork()
+        {
+            mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
+            {
+                {
+                    typeof (ClientRepository), () => new ClientRepository()
+                },
+                {
+                    typeof (CurrencyRepository), () => new CurrencyRepository()
+                },
+                {
+                    typeof (OrderItemRepository), () => new OrderItemRepository()
+                },
+                {
+                    typeof (OrderRepository), () => new OrderRepository()
+                },
+                {
+                    typeof (PayrollRepository), () => new PayrollRepository()
+                },
+                {
+                    typeof (ProductRepository), () => new ProductRepository()
+                },
+                {
+                    typeof (VatRepository), () => new VatRepository()
+                }
+            };
+        }
+
+#endregion
 
         #region Disposing Logic
 
