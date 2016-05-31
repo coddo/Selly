@@ -9,7 +9,7 @@ using Selly.Models.Interfaces;
 
 namespace Selly.BusinessLogic.Core.Base
 {
-    public class BaseCore<TRepo, TModel, TEntity>
+    public abstract class BaseCore<TRepo, TModel, TEntity>
         where TRepo : BaseRepository<TEntity>
         where TEntity : class, IDataAccessObject, new()
         where TModel : class, IModel, new()

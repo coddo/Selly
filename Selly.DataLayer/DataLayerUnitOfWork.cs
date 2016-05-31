@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Selly.DataLayer.Repositories;
 using Selly.DataLayer.Repositories.Base;
@@ -7,40 +8,22 @@ namespace Selly.DataLayer
 {
     public class DataLayerUnitOfWork : IDisposable
     {
-        private static readonly IDictionary<Type, Func<BaseDataRepository>> mRepositories;
+        private static IDictionary<Type, Func<BaseDataRepository>> mRepositories;
 
         private Entities mContext;
 
         static DataLayerUnitOfWork()
         {
-            mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
-            {
-                {
-                    typeof (ClientRepository), () => new ClientRepository()
-                },
-                {
-                    typeof (CurrencyRepository), () => new CurrencyRepository()
-                },
-                {
-                    typeof (OrderItemRepository), () => new OrderItemRepository()
-                },
-                {
-                    typeof (OrderRepository), () => new OrderRepository()
-                },
-                {
-                    typeof (PayrollRepository), () => new PayrollRepository()
-                },
-                {
-                    typeof (ProductRepository), () => new ProductRepository()
-                },
-                {
-                    typeof (VatRepository), () => new VatRepository()
-                }
-            };
+            InitializeUnitOfWork();
         }
 
         public DataLayerUnitOfWork()
         {
+            if (mRepositories == null)
+            {
+                InitializeUnitOfWork();
+            }
+
             mContext = new Entities();
         }
 
@@ -78,6 +61,23 @@ namespace Selly.DataLayer
         }
 
         #endregion
+
+        #region Initialization
+
+        private static void InitializeUnitOfWork()
+        {
+            mRepositories = new ConcurrentDictionary<Type, Func<BaseDataRepository>>();
+
+            mRepositories.Add(typeof(ClientRepository), () => new ClientRepository());
+            mRepositories.Add(typeof(CurrencyRepository), () => new CurrencyRepository());
+            mRepositories.Add(typeof(OrderItemRepository), () => new OrderItemRepository());
+            mRepositories.Add(typeof(OrderRepository), () => new OrderRepository());
+            mRepositories.Add(typeof(PayrollRepository), () => new PayrollRepository());
+            mRepositories.Add(typeof(ProductRepository), () => new ProductRepository());
+            mRepositories.Add(typeof(VatRepository), () => new VatRepository());
+        }
+
+#endregion
 
         #region Disposing Logic
 

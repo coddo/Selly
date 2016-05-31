@@ -18,12 +18,12 @@ namespace Selly.Models.Common.ClientServerInteraction
     public static class ResponseFactory<T>
         where T : class
     {
-        public static Response<T> CreateResponse(bool isSuccess, int code, T data)
+        public static Response<T> CreateResponse(bool isSuccess, int code, T data = null)
         {
             return new Response<T>(isSuccess, code, data);
         }
 
-        public static Response<T> CreateResponse(bool isSuccess, HttpStatusCode code, T data)
+        public static Response<T> CreateResponse(bool isSuccess, HttpStatusCode code, T data = null)
         {
             return new Response<T>(isSuccess, code, data);
         }

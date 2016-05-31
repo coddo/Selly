@@ -7,6 +7,7 @@ namespace Selly.Website
     {
         public void Configuration(IAppBuilder app)
         {
+            VatsInitializationService.Instance.InitializeVats();
             CurrencyUpdaterService.Instance.StartUpdaterService();
         }
     }

@@ -21,7 +21,7 @@ namespace Selly.DataLayer
         public System.DateTime Date { get; set; }
         public double Value { get; set; }
     
-        public virtual Client Client { get; set; }
         public virtual Order Order { get; set; }
+        public virtual Client Client { get; set; }
     }
 }
