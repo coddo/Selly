@@ -90,7 +90,79 @@ namespace Selly.BusinessLogic.Core
             }
         }
 
+        public static async Task<Response<Order>> Finalize(Order order)
+        {
+            if (!SalesValidator.ValidateOrder(order, false))
+            {
+                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+            }
+
+            order.Status = OrderStatus.Finalized.ToInt();
+
+            using (var unitOfWork = new DataLayerUnitOfWork())
+            {
+                var orderRepository = unitOfWork.TrackingRepository<OrderRepository>();
+
+                var dbModel = order.CopyTo<DataLayer.Order>();
+                var updatedOrder = await orderRepository.UpdateAsync(dbModel).ConfigureAwait(false);
+
+                if (updatedOrder == null)
+                {
+                    return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+                }
+
+                return await CreatePayroll(order, unitOfWork, orderRepository);
+            }
+        }
+
+        public static async Task<Response<Order>> Cancel(Order order)
+        {
+            if (!SalesValidator.ValidateOrder(order, false))
+            {
+                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+            }
+
+            order.Status = OrderStatus.Cancelled.ToInt();
+
+            using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
+            {
+                var dbModel = order.CopyTo<DataLayer.Order>();
+                var updatedOrder = await orderRepository.UpdateAsync(dbModel).ConfigureAwait(false);
+
+                if (updatedOrder == null)
+                {
+                    return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+                }
+
+                return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, order);
+            }
+        }
+
         #region Private methods
+
+        private static async Task<Response<Order>> CreatePayroll(Order order, DataLayerUnitOfWork unitOfWork, OrderRepository orderRepository)
+        {
+            var orderWithItems = await orderRepository.GetAsync(order.Id, new[]
+            {
+                nameof(Order.OrderItems)
+            }).ConfigureAwait(false);
+
+            var payroll = new Payroll
+            {
+                ClientId = order.ClientId,
+                Date = DateTime.Now,
+                OrderId = order.Id,
+                Value = orderWithItems.OrderItems.Sum(orderItem => orderItem.Price * orderItem.Quantity)
+            };
+
+            payroll = await unitOfWork.TrackingRepository<PayrollRepository>().CreateAsync(payroll).ConfigureAwait(false);
+            if (payroll == null)
+            {
+                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+            }
+
+            return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, order);
+        }
 
         private static IList<Order> SortOrders(IList<Order> orders, string orderBy, bool orderAscending)
         {

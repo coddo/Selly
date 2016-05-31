@@ -82,5 +82,37 @@ namespace Selly.Website.Controllers
                 return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
+
+        [HttpPost]
+        [ActionName("Finalize")]
+        public async Task<IHttpActionResult> Finalize([FromBody] Order order)
+        {
+            try
+            {
+                var result = await OrderCore.Finalize(order).ConfigureAwait(false);
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+            }
+        }
+
+        [HttpPost]
+        [ActionName("Cancel")]
+        public async Task<IHttpActionResult> Cancel([FromBody] Order order)
+        {
+            try
+            {
+                var result = await OrderCore.Cancel(order).ConfigureAwait(false);
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+            }
+        }
     }
 }
