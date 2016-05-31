@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
-using Owin;
-
-[assembly: OwinStartup(typeof(Selly.Website.Startup))]
+﻿using Owin;
+using Selly.BusinessLogic.Service;
 
 namespace Selly.Website
 {
@@ -12,6 +7,9 @@ namespace Selly.Website
     {
         public void Configuration(IAppBuilder app)
         {
+            VatsInitializationService.Instance.InitializeVats();
+            MockDataInitializationService.Instance.InitializeMockData();
+            CurrencyUpdaterService.Instance.StartUpdaterService();
         }
     }
 }

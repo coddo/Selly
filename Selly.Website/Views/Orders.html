@@ -1,0 +1,9 @@
+﻿
+<div class="container">
+    <h1>
+        All the orders in the system
+    </h1>
+    <hr />
+
+    <div ng-repeat="order in orders | orderBy:'date'" ng-include="'/Views/Templates/Order.html'"></div>
+</div>

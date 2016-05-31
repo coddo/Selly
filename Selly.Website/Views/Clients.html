@@ -1,0 +1,56 @@
+﻿
+<div class="container">
+    <h2>
+        All clients
+    </h2>
+    <hr />
+
+    
+    <blockquote ng-repeat="client in clients">
+        <div style="float:right">
+            <a class="btn btn-primary btn-lg" href="/clients/{{client.id}}">View user</a>
+        </div>
+        <span style="font-size:20px;font-weight:bold">{{client.firstName}} {{client.lastName}}</span><br />
+        {{client.email}}
+        <br />
+        Currency: <b>{{client.currency.name}}</b>
+    </blockquote>
+
+
+
+
+    <div class="well">
+        <h4>Add a new client</h4>
+
+        <table class="table">
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input type="text" class="form-control" ng-model="ui.newClient.firstName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>
+                    <input type="text" class="form-control" ng-model="ui.newClient.lastName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" class="form-control" ng-model="ui.newClient.email" />
+                </td>
+            </tr>
+            <tr>
+                <td>Currency</td>
+                <td>
+                    <select class="form-control" ng-options="currency.id as currency.name for currency in currencies" ng-model="ui.newClient.currencyId"></select>
+                </td>
+            </tr>
+        </table>
+        <div style="width:100%;">
+            <button style="float:right;display:inline-block;" class="btn btn-success btn-lg" ng-click="saveUser()">Save new user!</button>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</div>

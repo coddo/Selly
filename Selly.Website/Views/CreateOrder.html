@@ -1,0 +1,117 @@
+﻿<div class="container">
+    <h1>Create an order</h1>
+
+    <hr />
+
+    <table class="table">
+        <tr>
+            <td>Select user</td>
+            <td>
+                <select class="form-control" ng-options="client.firstName + ' ' + client.lastName for client in clients" ng-model="ui.selectedClient" ng-change="clearCart()"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>Sale type</td>
+            <td>
+                <select class="form-control" ng-options="sale.id as sale.name for sale in saleTypes" ng-model="ui.saleType"></select>
+            </td>
+        </tr>
+    </table>
+
+
+    <div class="well">
+        <center><h3>Add a product to the cart</h3></center>
+        <div class="input-group input-group-lg" style="width:100%">
+            <input type="text" class="form-control" placeholder="Filter products..." ng-model="ui.productFilter" />
+        </div>
+
+        <hr />
+
+        <div style="position:relative;width:100%;display:inline-block">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="padding:3px;" ng-repeat="product in products|filter:{name:ui.productFilter}">
+                <div class="panel panel-default" style="margin:0px;">
+                    <div class="panel-body">
+                        <span style="font-size:18px;"><b><u>{{product.name}}</u></b></span>
+                        <span style="float:right" class="btn btn-success" ng-click="addToCart(product)">Add!</span>
+
+                        <br />
+                        <b>Price</b>: {{product.price * ui.selectedClient.currency.multiplier | number }} {{ui.selectedClient.currency.name}}
+                        <br />
+                        <b>VAT</b>: {{product.valueAddedTax.value}}%
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h2>List of products</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Product name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>VAT</th>
+                <th>Price with VAT</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="product in ui.selectedProducts| orderBy:'+name'">
+                <td>{{$index + 1}}</td>
+                <td>{{product.name}}</td>
+                <td>
+                    <div class="input-group" style="width:125px">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="changeQuantity(product, -1)">-</button>
+                        </span>
+                        <input type="text" class="form-control" ng-model="product.quantity" ng-blur="changeQuantity(product, 0)" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="changeQuantity(product, 1)">+</button>
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <span ng-hide="product.editing">
+                        {{product.price | number}} {{ui.selectedClient.currency.name}}
+                        <br />
+                        <button class="btn btn-default btn-sm" ng-click="changePrice(product)">Change price!</button>
+                    </span>
+                    <span ng-show="product.editing">
+                        <input type="text" class="form-control" style="width:100px" ng-model="product.price" />
+                        <br />
+                        <button class="btn btn-success btn-sm" ng-click="changePrice(product)">Save price!</button>
+
+                    </span>
+                    <br />
+                </td>
+                <td>
+                    {{product.valueAddedTax.value  | number}}%
+                </td>
+                <td>
+                    {{product.valueAddedTax.value * product.price / 100 + product.price  | number}} {{ui.selectedClient.currency.name}}
+                </td>
+                <td>
+                    <button class="btn btn-danger" ng-click="deleteProduct(product)">Delete!</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-show="ui.selectedProducts!==null && ui.selectedProducts.length>0">
+        <hr />
+        <h3>Money paid by client: {{ui.moneyPaidByClient  | number}} {{ui.selectedClient.currency.name}} (Incl. VAT: {{ui.moneyPaidByClientVAT  | number}} {{ui.selectedClient.currency.name}}) </h3>
+        <h3>Money paid by us: {{ui.moneyPaidByUs  | number}} {{ui.selectedClient.currency.name}} (Incl. VAT: {{ui.moneyPaidByUsVAT  | number}} {{ui.selectedClient.currency.name}})</h3>
+
+        <hr />
+
+        <button class="btn btn-primary btn-lg" style="float:right" ng-click="placeOrder()">Place order!</button>
+    </div>
+
+</div>
+
