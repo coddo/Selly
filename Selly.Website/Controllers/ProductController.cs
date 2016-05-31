@@ -37,7 +37,11 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var products = await ProductCore.GetAllAsync().ConfigureAwait(false);
+                var products = await ProductCore.GetAllAsync(new[]
+                {
+                    nameof(Product.ValueAddedTax)
+                }).ConfigureAwait(false);
+
                 if (products == null || products.Count == 0)
                 {
                     return Ok(ResponseFactory<IList<Product>>.CreateResponse(true, HttpStatusCode.NoContent));
