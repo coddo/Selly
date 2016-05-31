@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Selly.DataLayer.Interfaces;
 
@@ -11,8 +13,17 @@ namespace Selly.DataLayer.Repositories.Base
     {
         internal BaseRepository()
         {
-            
-        } 
+        }
+
+        public async Task<IList<T>> GetListAsync(Expression<Func<T, bool>> query, IList<string> navigationProperties = null)
+        {
+            return await FetchListAsync(query, navigationProperties);
+        }
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> query, IList<string> navigationProperties = null)
+        {
+            return await FetchSingleAsync(query, navigationProperties);
+        }
 
         public virtual async Task<IList<T>> GetAllAsync(IList<string> navigationProperties = null)
         {
