@@ -12,8 +12,8 @@ namespace Selly.Website.Controllers
     public class SummaryController : ApiController
     {
         [HttpGet]
-        [ActionName("GetSummay")]
-        public async Task<IHttpActionResult> GetSummary()
+        [ActionName("Get")]
+        public async Task<IHttpActionResult> Get()
         {
             try
             {
