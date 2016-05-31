@@ -9,6 +9,8 @@ using Selly.DataAdapter;
 using Selly.DataLayer;
 using Selly.DataLayer.Repositories;
 using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Enums;
+using Selly.Models.Enums.EnumExtensions;
 using Order = Selly.Models.Order;
 
 namespace Selly.BusinessLogic.Core
@@ -27,6 +29,9 @@ namespace Selly.BusinessLogic.Core
             }
 
             Parallel.ForEach(order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty), orderItem => { orderItem.Id = Guid.NewGuid(); });
+
+            order.Date = DateTime.Now;
+            order.Status = OrderStatus.Created.ToInt();
 
             var result = await BaseCore<OrderRepository, Order, DataLayer.Order>.CreateAsync(order).ConfigureAwait(false);
             if (result == null)
@@ -72,7 +77,7 @@ namespace Selly.BusinessLogic.Core
         {
             using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
             {
-                var orders = await orderRepository.GetListAsync(order => order.ClientId == clientId, navigationProperties).ConfigureAwait(false);
+                var orders = await orderRepository.GetByClientId(clientId).ConfigureAwait(false);
 
                 if (orders == null || orders.Count == 0)
                 {

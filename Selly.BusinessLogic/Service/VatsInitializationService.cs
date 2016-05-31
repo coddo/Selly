@@ -27,13 +27,13 @@ namespace Selly.BusinessLogic.Service
         {
             Task.Run(async () =>
             {
-                var existingVats = await VatCore.GetAllAsync();
+                var existingVats = await VatCore.GetAllAsync().ConfigureAwait(false);
                 if (existingVats?.Count != 0)
                 {
                     return;
                 }
 
-                await VatCore.CreateAsync(mValueAddedTaxes);
+                await VatCore.CreateAsync(mValueAddedTaxes).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
     }
