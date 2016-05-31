@@ -49,7 +49,7 @@ namespace Selly.BusinessLogic.Service
                 }
             }).ConfigureAwait(false);
 
-            var existingCurrencies = await CurrencyCore.GetAllAsync();
+            var existingCurrencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
 
             if (existingCurrencies == null || existingCurrencies.Count == 0)
             {
@@ -82,16 +82,16 @@ namespace Selly.BusinessLogic.Service
                 Multiplier = rate.Value
             }));
 
-            await CurrencyCore.CreateAsync(currencies);
+            await CurrencyCore.CreateAsync(currencies).ConfigureAwait(false);
         }
 
         private static async Task UpdateCurrencies(IList<Currency> existingCurrencies, CurrencyModel currencyData)
         {
-            await CreateOrUpdateCurrency(existingCurrencies, currencyData.Base, 1);
+            await CreateOrUpdateCurrency(existingCurrencies, currencyData.Base, 1).ConfigureAwait(false);
 
             foreach (var rate in currencyData.Rates)
             {
-                await CreateOrUpdateCurrency(existingCurrencies, rate.Key, rate.Value);
+                await CreateOrUpdateCurrency(existingCurrencies, rate.Key, rate.Value).ConfigureAwait(false);
             }
 
             await CurrencyCore.UpdateAsync(existingCurrencies).ConfigureAwait(false);

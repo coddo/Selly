@@ -36,6 +36,11 @@ namespace Selly.BusinessLogic.Validation
 
         public static bool ValidateOrderItem(OrderItem orderItem, SaleType saleType)
         {
+            if (orderItem.Id == Guid.Empty)
+            {
+                return false;
+            }
+
             switch (saleType)
             {
                 case SaleType.Normal:

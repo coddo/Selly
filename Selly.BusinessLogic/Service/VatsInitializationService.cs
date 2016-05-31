@@ -14,9 +14,18 @@ namespace Selly.BusinessLogic.Service
         {
             mValueAddedTaxes = new[]
             {
-                new ValueAddedTax {Value = 20},
-                new ValueAddedTax {Value = 9},
-                new ValueAddedTax {Value = 5}
+                new ValueAddedTax
+                {
+                    Value = 20
+                },
+                new ValueAddedTax
+                {
+                    Value = 9
+                },
+                new ValueAddedTax
+                {
+                    Value = 5
+                }
             };
         }
 
@@ -26,13 +35,13 @@ namespace Selly.BusinessLogic.Service
         {
             Task.Run(async () =>
             {
-                var existingVats = await VatCore.GetAllAsync();
+                var existingVats = await VatCore.GetAllAsync().ConfigureAwait(false);
                 if (existingVats?.Count != 0)
                 {
                     return;
                 }
 
-                await VatCore.CreateAsync(mValueAddedTaxes);
+                await VatCore.CreateAsync(mValueAddedTaxes).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
     }
