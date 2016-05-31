@@ -26,10 +26,7 @@ namespace Selly.BusinessLogic.Core
                 return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
             }
 
-            foreach (var orderItem in order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty))
-            {
-                orderItem.Id = Guid.NewGuid();
-            }
+            Parallel.ForEach(order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty), orderItem => { orderItem.Id = Guid.NewGuid(); });
 
             var result = await BaseCore<OrderRepository, Order, DataLayer.Order>.CreateAsync(order).ConfigureAwait(false);
             if (result == null)
@@ -119,7 +116,9 @@ namespace Selly.BusinessLogic.Core
                     return orders;
             }
 
-            return orderAscending ? orders.OrderBy(orderClause).ToArray() : orders.OrderByDescending(orderClause).ToArray();
+            return orderAscending
+                       ? orders.OrderBy(orderClause).ToArray()
+                       : orders.OrderByDescending(orderClause).ToArray();
         }
 
         #endregion
