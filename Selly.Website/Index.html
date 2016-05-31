@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html ng-app="selly">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="fragment" content="#!" />
+    <base href="/">
+
+    <title>Selly</title>
+
+    <!--CSS files-->
+    <link rel="stylesheet" href="/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="/Content/ui-bootstrap-csp.css">
+    <link rel="stylesheet" href="/Content/Site.css">
+
+    <!--Google fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <!--Scripts-->
+    <script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <!--<script src="/Scripts/jquery-ui-1.11.4.min.js" type="text/javascript"></script>-->
+    <script src="/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="Scripts/angular.min.js"></script>
+    <script src="/Scripts/angular-route.min.js"></script>
+    <script src="/Scripts/angular-resource.min.js"></script>
+    <script src="/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+
+    <!--Angular application files-->
+    <script src="/App/app.js"></script>
+    <script src="/App/API.js"></script>
+
+    <!--Angular controllers-->
+    <script src="/App/Controllers/IndexController.js"></script>
+    <script src="/App/Controllers/CreateOrderController.js"></script>
+    <script src="/App/Controllers/ClientsController.js"></script>
+    <script src="/App/Controllers/ClientController.js"></script>
+
+    <!--Angular services-->
+    <script src="/App/Services/HelperService.js"></script>
+
+</head>
+<body>
+    <div class="body-background">
+    </div>
+
+    <nav id="navbar" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" ng-href="/">
+                    Selly
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!--<li class="active"><a href="/">Homepage</a></li>-->
+                    <li><a href="/clients">Clients</a></li>
+                    <li><a href="/orders">Orders</a></li>
+                    <li><a href="/orders">Settings</a></li>
+                    <li><a href="/create"><b>Create an order!</b></a></li>
+                </ul>
+            </div>
+            <!--<a class="navbar-brand navbar-right" ng-href="/scrisoare">
+            ...
+                        </a>-->
+        </div>
+    </nav>
+
+    <ng-view></ng-view>
+
+    <!--message and loading-->
+    <div id="message" class="alert"></div>
+    <div id="loading" class="loading"></div>
+
+
+    <br />
+    <br />
+    <br />
+
+</body>
+</html>
