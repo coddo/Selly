@@ -1,4 +1,5 @@
-﻿using Owin;
+﻿using System.Threading;
+using Owin;
 using Selly.BusinessLogic.Service;
 
 namespace Selly.Website
@@ -10,6 +11,7 @@ namespace Selly.Website
             VatsInitializationService.Instance.InitializeVats();
             CurrencyUpdaterService.Instance.StartUpdaterService();
 
+            Thread.Sleep(2000);
             MockDataInitializationService.Instance.InitializeMockData();
         }
     }

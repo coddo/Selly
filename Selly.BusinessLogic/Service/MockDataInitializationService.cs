@@ -82,30 +82,36 @@ namespace Selly.BusinessLogic.Service
 
         public void InitializeMockData()
         {
-            Task.Run(async () =>
+            try
             {
-                var existingProducts = await ProductCore.GetAllAsync().ConfigureAwait(false);
-                if (existingProducts?.Count != 0)
+                Task.Run(async () =>
                 {
-                    return;
-                }
-                await ProductCore.CreateAsync(mProducts);
+                    var existingProducts = await ProductCore.GetAllAsync().ConfigureAwait(false);
+                    if (existingProducts?.Count != 0)
+                    {
+                        return;
+                    }
+                    await ProductCore.CreateAsync(mProducts);
 
-                var existingClients = await ClientCore.GetAllAsync().ConfigureAwait(false);
-                if (existingClients?.Count != 0)
-                {
-                    return;
-                }
+                    var existingClients = await ClientCore.GetAllAsync().ConfigureAwait(false);
+                    if (existingClients?.Count != 0)
+                    {
+                        return;
+                    }
 
-                var currencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
-                var currency = currencies.FirstOrDefault(c => c.Name == "RON");
-                foreach (var client in mClients)
-                {
-                    client.CurrencyId = currency.Id;
-                }
+                    var currencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
+                    var currency = currencies.FirstOrDefault(c => c.Name == "RON");
+                    foreach (var client in mClients)
+                    {
+                        client.CurrencyId = currency.Id;
+                    }
 
-                await ClientCore.CreateAsync(mClients).ConfigureAwait(false);
-            }).ConfigureAwait(false).GetAwaiter().GetResult();
+                    await ClientCore.CreateAsync(mClients).ConfigureAwait(false);
+                }).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch
+            {
+            }
         }
     }
 }
