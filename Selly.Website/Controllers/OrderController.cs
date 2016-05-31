@@ -5,8 +5,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
+using Selly.BusinessLogic.Utility;
 using Selly.Models;
 using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Enums;
 
 namespace Selly.Website.Controllers
 {
@@ -72,7 +74,7 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                if (order.ClientId == Guid.Empty || order.OrderItems == null || order.OrderItems.Count == 0)
+                if (!ValidateOrder(order))
                 {
                     return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
                 }
@@ -102,8 +104,7 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                if (order.ClientId == Guid.Empty || order.OrderItems == null || order.OrderItems.Count == 0 ||
-                    order.OrderItems.Any(orderItem => orderItem.Id == Guid.Empty))
+                if (!ValidateOrder(order, false))
                 {
                     return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
                 }
@@ -155,6 +156,41 @@ namespace Selly.Website.Controllers
             }
 
             return orderAscending ? orders.OrderBy(orderClause).ToArray() : orders.OrderByDescending(orderClause).ToArray();
+        }
+
+        private static bool ValidateOrder(Order order, bool tolerateEmptyGuids = true)
+        {
+            if (order.ClientId == Guid.Empty || order.OrderItems == null || order.OrderItems.Count == 0)
+            {
+                return false;
+            }
+
+            if (!tolerateEmptyGuids)
+            {
+                return order.OrderItems.All(orderItem => orderItem.Id != Guid.Empty);
+            }
+
+            if (!order.OrderItems.All(orderItem => orderItem.Price > 0))
+            {
+                return false;
+            }
+
+            return ValidateOrderItems(order.OrderItems, (SaleType) order.SaleType);
+        }
+
+        private static bool ValidateOrderItems(IEnumerable<OrderItem> orderItems, SaleType orderType)
+        {
+            switch (orderType)
+            {
+                case SaleType.Normal:
+                    return orderItems.All(orderItem => orderItem.Quantity > 0);
+                case SaleType.Return:
+                    return orderItems.All(orderItem => orderItem.Quantity < 0);
+                case SaleType.Exchange:
+                    return orderItems.All(orderItem => !FloatingPointUtility.AreEqual(orderItem.Quantity, 0));
+                default:
+                    return false;
+            }
         }
 
         #endregion
