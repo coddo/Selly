@@ -23,27 +23,30 @@
         ]
         $scope.ui.saleType = $scope.saleTypes[0].id;
 
-        $scope.products = [{
-            id: 1,
-            name: 'Pita',
-            price: 23,
-            valueAddedTax: { id: 12, value: 19 }
-        },
-        {
-            id: 2,
-            name: 'Ulei',
-            price: 8,
-            valueAddedTax: { id: 12, value: 9 }
-        },
-        {
-            id: 3,
-            name: 'Carne',
-            price: 199,
-            valueAddedTax: { id: 12, value: 19 }
-        }];
+        $scope.products = [
+        //    {
+        //        id: 1,
+        //        name: 'Pita',
+        //        price: 23,
+        //        valueAddedTax: { id: 12, value: 19 }
+        //    },
+        //{
+        //    id: 2,
+        //    name: 'Ulei',
+        //    price: 8,
+        //    valueAddedTax: { id: 12, value: 9 }
+        //},
+        //{
+        //    id: 3,
+        //    name: 'Carne',
+        //    price: 199,
+        //    valueAddedTax: { id: 12, value: 19 }
+        //}
+        ];
 
         function init() {
             loadClients();
+            loadProducts();
         }
         init();
 
