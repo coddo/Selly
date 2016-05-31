@@ -21,6 +21,15 @@
                 templateUrl: '/Views/Client.html',
                 controller: 'ClientController'
             })
+
+             .when('/orders', {
+                 templateUrl: '/Views/Orders.html',
+                 controller: 'OrdersController'
+             })
+             .when('/orders/:orderId', {
+                 templateUrl: '/Views/SingleOrder.html',
+                 controller: 'OrderController'
+             })
             //.when('/scrisoare', {
             //    templateUrl: '/Views/Letter.html',
             //    controller: 'LetterController'

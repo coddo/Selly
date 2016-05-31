@@ -14,7 +14,10 @@
     <hr />
 
     
-    <div class="well">
+    <div ng-repeat="order in orders | orderBy:'date'" ng-include="'/Views/Templates/Order.html'"></div>
+
+
+    <!--<div class="well">
 
         <div style="font-size:20px;">
             <span style="float:right">Type: <span class="label label-default">REGULAR</span></span>
@@ -35,7 +38,7 @@
             <button class="btn btn-primary btn-lg">View details</button>
         </div>
 
-    </div>
+    </div>-->
 
 
 

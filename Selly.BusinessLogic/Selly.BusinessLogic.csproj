@@ -54,6 +54,7 @@
     <Compile Include="Core\VatCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\CurrencyUpdaterService.cs" />
+    <Compile Include="Service\MockDataInitializationService.cs" />
     <Compile Include="Service\VatsInitializationService.cs" />
     <Compile Include="Utility\FloatingPointUtility.cs" />
     <Compile Include="Utility\Timer.cs" />

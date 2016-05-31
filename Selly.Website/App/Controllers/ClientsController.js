@@ -7,7 +7,7 @@
                 firstName: '',
                 lastName: '',
                 email: '',
-                currencyId: 'F9F69F05-B269-4FDB-A920-00659EDA5CE4'
+                currencyId: $scope.currencies[0].id
             };
         }
 
@@ -19,7 +19,6 @@
         };
 
         function init() {
-            emptyClient();
             loadClients();
             loadCurrencies();
         }
@@ -45,6 +44,8 @@
             API.getAllCurrecies(function (success) {
                 $scope.currencies = success.data;
                 HelperService.StopLoading('loadCurrencies');
+
+                emptyClient();
 
                 if (!success.isSuccess)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');

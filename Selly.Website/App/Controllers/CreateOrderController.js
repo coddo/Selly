@@ -23,27 +23,30 @@
         ]
         $scope.ui.saleType = $scope.saleTypes[0].id;
 
-        $scope.products = [{
-            id: 1,
-            name: 'Pita',
-            price: 23,
-            valueAddedTax: { id: 12, value: 19 }
-        },
-        {
-            id: 2,
-            name: 'Ulei',
-            price: 8,
-            valueAddedTax: { id: 12, value: 9 }
-        },
-        {
-            id: 3,
-            name: 'Carne',
-            price: 199,
-            valueAddedTax: { id: 12, value: 19 }
-        }];
+        $scope.products = [
+        //    {
+        //        id: 1,
+        //        name: 'Pita',
+        //        price: 23,
+        //        valueAddedTax: { id: 12, value: 19 }
+        //    },
+        //{
+        //    id: 2,
+        //    name: 'Ulei',
+        //    price: 8,
+        //    valueAddedTax: { id: 12, value: 9 }
+        //},
+        //{
+        //    id: 3,
+        //    name: 'Carne',
+        //    price: 199,
+        //    valueAddedTax: { id: 12, value: 19 }
+        //}
+        ];
 
         function init() {
             loadClients();
+            loadProducts();
         }
         init();
 
@@ -52,6 +55,8 @@
             HelperService.StartLoading('loadClients');
             API.getAllClients(function (success) {
                 $scope.clients = success.data;
+                $scope.ui.selectedClient = $scope.clients[0];
+
                 HelperService.StopLoading('loadClients');
 
                 if (!success.isSuccess)
@@ -62,13 +67,33 @@
             });
         };
 
+        function loadProducts() {
+            HelperService.StartLoading('loadProducts');
+            API.getAllProducts(function (success) {
+                $scope.products = success.data;
+
+                HelperService.StopLoading('loadProducts');
+
+                if (!success.isSuccess)
+                    HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
+            }, function (error) {
+                HelperService.StopLoading('loadProducts');
+                HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
+            });
+        };
+
 
         $scope.addToCart = function (product) {
             var index = $scope.ui.selectedProducts.indexOf(product);
             if (index < 0) {
-                product.quantity = $scope.ui.saleType == 2 ? -1 : 1;
-                product.productId = product.id;
-                $scope.ui.selectedProducts.push(product);
+                var p = {
+                    productId: product.id,
+                    quantity: $scope.ui.saleType == 2 ? -1 : 1,
+                    name: product.name,
+                    price: product.price * $scope.ui.selectedClient.currency.multiplier,
+                    valueAddedTax: product.valueAddedTax,
+                };
+                $scope.ui.selectedProducts.push(p);
             } else {
                 if ($scope.ui.saleType == 2)
                     $scope.ui.selectedProducts[index].quantity--;
@@ -105,6 +130,12 @@
             updateMoney();
         }
 
+        $scope.clearCart = function () {
+            $scope.ui.selectedProducts = [];
+
+            updateMoney();
+        }
+
         function updateMoney() {
             $scope.ui.moneyPaidByClient = 0;
             $scope.ui.moneyPaidByUs = 0;
@@ -128,7 +159,30 @@
 
 
         $scope.placeOrder = function () {
-            console.log($scope.ui.selectedProducts);
+
+            HelperService.StartLoading('placeOrder');
+            API.placeOrder({
+                clientId: $scope.ui.selectedClient.id,
+                currencyId: $scope.ui.selectedClient.currency.id,
+                saleType: $scope.ui.saleType,
+                orderItems: $scope.ui.selectedProducts,
+                date: new Date()
+            },
+                function (success) {
+
+                    if (success.isSuccess) {
+                        $scope.clearCart();
+                        HelperService.ShowMessage('alert-success', 'Order placed!');
+
+                    } else
+                        HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
+
+                    HelperService.StopLoading('placeOrder');
+
+                }, function (error) {
+                    HelperService.StopLoading('placeOrder');
+                    HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
+                });
         }
 
     });

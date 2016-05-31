@@ -23,12 +23,12 @@ namespace Selly.BusinessLogic.Core
 
         public new static async Task<Response<Order>> CreateAsync(Order order)
         {
+            Parallel.ForEach(order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty), orderItem => { orderItem.Id = Guid.NewGuid(); });
+
             if (!SalesValidator.ValidateOrder(order))
             {
                 return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
             }
-
-            Parallel.ForEach(order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty), orderItem => { orderItem.Id = Guid.NewGuid(); });
 
             order.Date = DateTime.Now;
             order.Status = OrderStatus.Created.ToInt();

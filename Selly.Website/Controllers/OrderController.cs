@@ -65,7 +65,7 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
