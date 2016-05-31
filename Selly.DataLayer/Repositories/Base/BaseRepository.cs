@@ -57,10 +57,7 @@ namespace Selly.DataLayer.Repositories.Base
                 return null;
             }
 
-            foreach (var entity in entities.Where(entity => entity.Id == Guid.Empty))
-            {
-                entity.Id = Guid.NewGuid();
-            }
+            Parallel.ForEach(entities.Where(entity => entity.Id == Guid.Empty), entity => { entity.Id = Guid.NewGuid(); });
 
             return await AddAsync(entities);
         }

@@ -1,5 +1,4 @@
-﻿using System.Web.Http;
-using Microsoft.Owin.Security.OAuth;
+using System.Web.Http;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
 
@@ -9,8 +8,6 @@ namespace Selly.Website
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-            // Use camel case for JSON data.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));

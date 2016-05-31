@@ -17,7 +17,11 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var model = await ClientCore.GetAsync(clientId);
+                var model = await ClientCore.GetAsync(clientId, new[]
+                {
+                    nameof(Client.Currency)
+                });
+
                 if (model == null)
                 {
                     return Ok(ResponseFactory.CreateResponse(false, HttpStatusCode.NotFound));
@@ -37,7 +41,11 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var modelCollection = await ClientCore.GetAllAsync();
+                var modelCollection = await ClientCore.GetAllAsync(new[]
+                {
+                    nameof(Client.Currency)
+                });
+
                 if (modelCollection == null)
                 {
                     return Ok(ResponseFactory.CreateResponse(false, HttpStatusCode.NotFound));

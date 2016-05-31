@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,51 +13,41 @@ namespace Selly.Website.Controllers
     {
         [HttpGet]
         [ActionName("GetAll")]
-        public async Task<IHttpActionResult> GetAll()
+        public async Task<IHttpActionResult> GetAll(string orderBy = "", bool orderAscending = true)
         {
             try
             {
-                var orders = await OrderCore.GetAllAsync(new[]
+                var result = await OrderCore.GetAllAsync(orderBy, orderAscending, new[]
                 {
                     nameof(Order.Client),
                     nameof(Order.OrderItems)
                 }).ConfigureAwait(false);
 
-                if (orders == null || orders.Count == 0)
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.NoContent));
-                }
-
-                return Ok(ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, orders));
+                return Ok(result);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
 
         [HttpGet]
         [ActionName("GetAllForUser")]
-        public async Task<IHttpActionResult> GetAllForUser(Guid userId)
+        public async Task<IHttpActionResult> GetAllForUser(Guid userId, string orderBy = "", bool orderAscending = true)
         {
             try
             {
-                var orders = await OrderCore.GetAllForUserAsync(userId, new[]
+                var result = await OrderCore.GetAllForUserAsync(userId, orderBy, orderAscending, new[]
                 {
                     nameof(Order.Client),
                     nameof(Order.OrderItems)
                 }).ConfigureAwait(false);
 
-                if (orders == null || orders.Count == 0)
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.NoContent));
-                }
-
-                return Ok(ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, orders));
+                return Ok(result);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
             }
         }
 
@@ -68,23 +57,9 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                if (order.ClientId == Guid.Empty || order.OrderItems == null || order.OrderItems.Count == 0)
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
-
-                foreach (var orderItem in order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty))
-                {
-                    orderItem.Id = Guid.NewGuid();
-                }
-
                 var result = await OrderCore.CreateAsync(order).ConfigureAwait(false);
-                if (result == null)
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
 
-                return Ok(ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, result));
+                return Ok(result);
             }
             catch (Exception)
             {
@@ -98,20 +73,9 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                if (order.ClientId == Guid.Empty || order.OrderItems == null || order.OrderItems.Count == 0 ||
-                    order.OrderItems.Any(orderItem => orderItem.Id == Guid.Empty))
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
-
                 var result = await OrderCore.UpdateAsync(order).ConfigureAwait(false);
 
-                if (result == null)
-                {
-                    return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
-
-                return Ok(ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, result));
+                return Ok(result);
             }
             catch (Exception)
             {
