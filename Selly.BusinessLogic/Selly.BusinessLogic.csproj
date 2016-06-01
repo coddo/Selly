@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Base\BaseCore.cs" />
+    <Compile Include="Core\Base\BaseDoublePkCore.cs" />
+    <Compile Include="Core\Base\BaseSinglePkCore.cs" />
     <Compile Include="Core\ClientCore.cs" />
     <Compile Include="Core\CurrencyCore.cs" />
     <Compile Include="Core\OrderCore.cs" />

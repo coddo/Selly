@@ -15,7 +15,7 @@ using Order = Selly.Models.Order;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class OrderCore : BaseCore<OrderRepository, Order, DataLayer.Order>
+    public class OrderCore : BaseSinglePkCore<OrderRepository, Order, DataLayer.Order>
     {
         private OrderCore()
         {
@@ -142,7 +142,10 @@ namespace Selly.BusinessLogic.Core
 
         private static async Task<Response<Order>> CreatePayroll(Order order, DataLayerUnitOfWork unitOfWork, OrderRepository orderRepository)
         {
-            var orderWithItems = await orderRepository.GetAsync(order.Id, new[]
+            var orderWithItems = await orderRepository.GetAsync(new[]
+            {
+                order.Id
+            }, new[]
             {
                 nameof(Order.OrderItems)
             }).ConfigureAwait(false);

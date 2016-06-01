@@ -11,7 +11,7 @@ using OrderItem = Selly.Models.OrderItem;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class OrderItemCore : BaseCore<OrderItemRepository, OrderItem, DataLayer.OrderItem>
+    public class OrderItemCore : BaseSinglePkCore<OrderItemRepository, OrderItem, DataLayer.OrderItem>
     {
         private OrderItemCore()
         {
@@ -21,7 +21,7 @@ namespace Selly.BusinessLogic.Core
         {
             using (var unitOfWork = new DataLayerUnitOfWork())
             {
-                var order = await unitOfWork.TrackingRepository<OrderRepository>().GetAsync(orderItem.OrderId).ConfigureAwait(false);
+                var order = await unitOfWork.TrackingRepository<OrderRepository>().GetAsync(new[] { orderItem.OrderId}).ConfigureAwait(false);
 
                 if (!SalesValidator.ValidateOrderItem(orderItem, (SaleType) order.SaleType))
                 {
