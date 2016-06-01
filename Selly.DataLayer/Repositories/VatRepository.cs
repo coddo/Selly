@@ -2,7 +2,7 @@
 
 namespace Selly.DataLayer.Repositories
 {
-    public class VatRepository : BaseRepository<ValueAddedTax>
+    public class VatRepository : BaseSinglePkRepository<ValueAddedTax>
     {
     }
 }
