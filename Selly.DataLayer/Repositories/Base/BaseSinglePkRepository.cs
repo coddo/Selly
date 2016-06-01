@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Selly.DataLayer.Interfaces;
 
 namespace Selly.DataLayer.Repositories.Base
@@ -21,6 +23,23 @@ namespace Selly.DataLayer.Repositories.Base
         protected override bool ValidateEntity(T entity)
         {
             return entity != null && entity.Id != Guid.Empty;
+        }
+
+        public override Task<T> CreateAsync(T entity)
+        {
+            if (entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
+
+            return base.CreateAsync(entity);
+        }
+
+        public override Task<IList<T>> CreateAsync(IList<T> entities)
+        {
+            Parallel.ForEach(entities.Where(entity => entity.Id == Guid.Empty), entity => { entity.Id = Guid.NewGuid(); });
+
+            return base.CreateAsync(entities);
         }
     }
 }
