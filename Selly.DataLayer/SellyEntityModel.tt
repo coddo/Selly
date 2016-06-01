@@ -329,7 +329,7 @@ public class CodeStringGenerator
 	 {
 		 return (entity.KeyMembers.Count == 1 && 
 		 entity.KeyMembers[0].Name == "Id" &&
-		 !(entity.KeyMembers[0] is string))
+		 entity.Name != "AspNetUser")
 			? "ISinglePkDataAccessObject" 
 			: "IDataAccessObject";
 	 }
