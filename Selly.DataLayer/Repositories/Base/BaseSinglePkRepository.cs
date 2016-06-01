@@ -6,7 +6,7 @@ using Selly.DataLayer.Interfaces;
 namespace Selly.DataLayer.Repositories.Base
 {
     public abstract class BaseSinglePkRepository<T> : BaseRepository<T>
-        where T : class, IDataAccessObject, new()
+        where T : class, ISinglePkDataAccessObject, new()
     {
         protected override Expression<Func<T, bool>> GetFindByIdQuery(IList<Guid> primaryKeys)
         {

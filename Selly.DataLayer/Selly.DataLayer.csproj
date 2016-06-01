@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="DataLayerUnitOfWork.cs" />
     <Compile Include="Interfaces\IDataAccessObject.cs" />
+    <Compile Include="Interfaces\ISinglePkDataAccessObject.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>

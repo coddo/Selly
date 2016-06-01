@@ -35,7 +35,7 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<T> CreateAsync(T entity)
         {
-            if (entity == null)
+            if (!ValidateEntity(entity))
             {
                 return null;
             }
@@ -50,7 +50,7 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<IList<T>> CreateAsync(IList<T> entities)
         {
-            if (entities.Any(e => e == null))
+            if (entities.Any(entity => !ValidateEntity(entity)))
             {
                 return null;
             }
@@ -62,10 +62,6 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
-            //if (entity == null || entity.Id == Guid.Empty)
-            //{
-            //    return null;
-            //}
             if (!ValidateEntity(entity))
             {
                 return null;
@@ -76,10 +72,6 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<IList<T>> UpdateAsync(IList<T> entities)
         {
-            //if (entities.Any(entity => entity == null || entity.Id == Guid.Empty))
-            //{
-            //    return null;
-            //}
             if (entities.Any(entity => !ValidateEntity(entity)))
             {
                 return null;
@@ -90,10 +82,6 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<bool> DeleteAsync(T entity)
         {
-            //if (entity == null || entity.Id == Guid.Empty)
-            //{
-            //    return false;
-            //}
             if (!ValidateEntity(entity))
             {
                 return false;
@@ -106,10 +94,6 @@ namespace Selly.DataLayer.Repositories.Base
 
         public virtual async Task<bool> DeleteAsync(IList<T> entities)
         {
-            //if (entities == null || entities.Any(entity => entity == null || entity.Id == Guid.Empty))
-            //{
-            //    return false;
-            //}
             if (entities.Any(entity => !ValidateEntity(entity)))
             {
                 return false;
