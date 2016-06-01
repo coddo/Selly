@@ -1,4 +1,5 @@
-﻿using Owin;
+﻿using System.Threading;
+using Owin;
 using Selly.BusinessLogic.Service;
 
 namespace Selly.Website
@@ -8,8 +9,10 @@ namespace Selly.Website
         public void Configuration(IAppBuilder app)
         {
             VatsInitializationService.Instance.InitializeVats();
-            MockDataInitializationService.Instance.InitializeMockData();
             CurrencyUpdaterService.Instance.StartUpdaterService();
+
+            Thread.Sleep(2000);
+            MockDataInitializationService.Instance.InitializeMockData();
         }
     }
 }

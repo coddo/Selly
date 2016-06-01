@@ -6,7 +6,7 @@ namespace Selly.BusinessLogic.Utility
     {
         public static bool AreEqual(double target, double expected, double tolerance = 1e-20)
         {
-            return Math.Abs(target - expected) > tolerance;
+            return Math.Abs(target - expected) < tolerance;
         }
     }
 }
