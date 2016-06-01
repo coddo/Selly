@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Selly.DataAdapter;
 using Selly.DataLayer;
@@ -19,16 +18,6 @@ namespace Selly.BusinessLogic.Core.Base
             using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
             {
                 var entities = await repository.GetAllAsync(navigationProperties);
-
-                return entities.CopyTo<TModel>();
-            }
-        }
-
-        public static async Task<TModel> GetAsync(Guid id, IList<string> navigationProperties = null)
-        {
-            using (var repository = DataLayerUnitOfWork.Repository<TRepo>())
-            {
-                var entities = await repository.GetAsync(id, navigationProperties);
 
                 return entities.CopyTo<TModel>();
             }

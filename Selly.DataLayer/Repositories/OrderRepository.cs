@@ -5,7 +5,7 @@ using Selly.DataLayer.Repositories.Base;
 
 namespace Selly.DataLayer.Repositories
 {
-    public class OrderRepository : BaseRepository<Order>
+    public class OrderRepository : BaseSinglePkRepository<Order>
     {
         public async Task<IList<Order>> GetByClientId(Guid clientId, IList<string> navigationProperties = null)
         {

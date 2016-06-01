@@ -9,7 +9,7 @@ using Payroll = Selly.Models.Payroll;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class PayrollCore : BaseCore<PayrollRepository, Models.Payroll, DataLayer.Payroll>
+    public class PayrollCore : BaseSinglePkCore<PayrollRepository, Models.Payroll, DataLayer.Payroll>
     {
         private PayrollCore()
         {

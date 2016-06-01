@@ -2,7 +2,7 @@
 
 namespace Selly.DataLayer.Repositories
 {
-    public class ProductRepository : BaseRepository<Product>
+    public class ProductRepository : BaseSinglePkRepository<Product>
     {
     }
 }

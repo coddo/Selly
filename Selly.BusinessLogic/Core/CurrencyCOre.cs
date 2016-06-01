@@ -3,7 +3,7 @@ using Selly.DataLayer.Repositories;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class CurrencyCore : BaseCore<CurrencyRepository, Models.Currency, DataLayer.Currency>
+    public class CurrencyCore : BaseSinglePkCore<CurrencyRepository, Models.Currency, DataLayer.Currency>
     {
         private CurrencyCore()
         {

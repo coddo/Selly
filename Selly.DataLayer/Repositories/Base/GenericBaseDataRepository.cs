@@ -4,12 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Selly.DataLayer.Interfaces;
 
 namespace Selly.DataLayer.Repositories.Base
 {
     public abstract class GenericDataRepository<T> : BaseDataRepository
-        where T : class, IDataAccessObject, new()
+        where T : class, new()
     {
         private bool mIsEntityTrackingOn;
         private Func<IList<string>, IQueryable<T>> mQueryGenerator;

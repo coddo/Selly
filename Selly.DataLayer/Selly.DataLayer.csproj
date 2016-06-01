@@ -59,6 +59,8 @@
     </Compile>
     <Compile Include="DataLayerUnitOfWork.cs" />
     <Compile Include="Interfaces\IDataAccessObject.cs" />
+    <Compile Include="Interfaces\ISinglePkDataAccessObject.cs" />
+    <Compile Include="Models\PkWrapper.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>
@@ -74,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Base\BaseRepository.cs" />
     <Compile Include="Repositories\Base\BaseDataRepository.cs" />
+    <Compile Include="Repositories\Base\BaseSinglePkRepository.cs" />
     <Compile Include="Repositories\Base\GenericBaseDataRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
     <Compile Include="Repositories\CurrencyRepository.cs" />

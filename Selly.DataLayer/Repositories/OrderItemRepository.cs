@@ -2,7 +2,7 @@
 
 namespace Selly.DataLayer.Repositories
 {
-    public class OrderItemRepository : BaseRepository<OrderItem>
+    public class OrderItemRepository : BaseSinglePkRepository<OrderItem>
     {
     }
 }

@@ -3,7 +3,7 @@ using Selly.DataLayer.Repositories;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class ProductCore : BaseCore<ProductRepository, Models.Product, DataLayer.Product>
+    public class ProductCore : BaseSinglePkCore<ProductRepository, Models.Product, DataLayer.Product>
     {
         private ProductCore()
         {

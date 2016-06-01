@@ -2,7 +2,7 @@
 
 namespace Selly.DataLayer.Repositories
 {
-    public class CurrencyRepository : BaseRepository<Currency>
+    public class CurrencyRepository : BaseSinglePkRepository<Currency>
     {
     }
 }
