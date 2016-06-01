@@ -9,7 +9,7 @@ using Selly.DataLayer.Interfaces;
 namespace Selly.DataLayer.Repositories.Base
 {
     public abstract class BaseRepository<T> : GenericDataRepository<T>
-        where T : class, new()
+        where T : class, IDataAccessObject, new()
     {
         internal BaseRepository()
         {
