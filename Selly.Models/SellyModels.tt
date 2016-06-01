@@ -328,6 +328,11 @@ public class CodeStringGenerator
 	 private string GetInterfaceForEntity(EntityType entity) 
 	 {
 		 return entity.KeyMembers.Count == 1 ? "ISinglePkModel" : "IModel";
+		 return (entity.KeyMembers.Count == 1 && 
+		 entity.KeyMembers[0].Name == "Id" &&
+		 !(entity.KeyMembers[0] is string))
+			? "ISinglePkModel" 
+			: "IModel";
 	 }
     
     public string EnumOpening(SimpleType enumType)
