@@ -4,6 +4,7 @@ using Selly.BusinessLogic.Core.Base;
 using Selly.BusinessLogic.Validation;
 using Selly.DataAdapter;
 using Selly.DataLayer;
+using Selly.DataLayer.Models;
 using Selly.DataLayer.Repositories;
 using Selly.Models.Common.ClientServerInteraction;
 using Selly.Models.Enums;
@@ -21,7 +22,7 @@ namespace Selly.BusinessLogic.Core
         {
             using (var unitOfWork = new DataLayerUnitOfWork())
             {
-                var order = await unitOfWork.TrackingRepository<OrderRepository>().GetAsync(new[] { orderItem.OrderId}).ConfigureAwait(false);
+                var order = await unitOfWork.TrackingRepository<OrderRepository>().GetAsync(PkWrapper.New(orderItem.OrderId)).ConfigureAwait(false);
 
                 if (!SalesValidator.ValidateOrderItem(orderItem, (SaleType) order.SaleType))
                 {

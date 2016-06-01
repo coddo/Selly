@@ -7,6 +7,7 @@ using Selly.BusinessLogic.Core.Base;
 using Selly.BusinessLogic.Validation;
 using Selly.DataAdapter;
 using Selly.DataLayer;
+using Selly.DataLayer.Models;
 using Selly.DataLayer.Repositories;
 using Selly.Models.Common.ClientServerInteraction;
 using Selly.Models.Enums;
@@ -142,10 +143,7 @@ namespace Selly.BusinessLogic.Core
 
         private static async Task<Response<Order>> CreatePayroll(Order order, DataLayerUnitOfWork unitOfWork, OrderRepository orderRepository)
         {
-            var orderWithItems = await orderRepository.GetAsync(new[]
-            {
-                order.Id
-            }, new[]
+            var orderWithItems = await orderRepository.GetAsync(PkWrapper.New(order.Id), new[]
             {
                 nameof(Order.OrderItems)
             }).ConfigureAwait(false);

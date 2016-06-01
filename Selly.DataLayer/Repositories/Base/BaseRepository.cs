@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Selly.DataLayer.Interfaces;
+using Selly.DataLayer.Models;
 
 namespace Selly.DataLayer.Repositories.Base
 {
@@ -22,9 +22,9 @@ namespace Selly.DataLayer.Repositories.Base
             return await FetchAllAsync(navigationProperties);
         }
 
-        public async Task<T> GetAsync(IList<Guid> primaryKeys, IList<string> navigationProperties = null)
+        public async Task<T> GetAsync(PkWrapper pkWrapper, IList<string> navigationProperties = null)
         {
-            var query = GetFindByIdQuery(primaryKeys);
+            var query = GetFindByIdQuery(pkWrapper.PrimaryKeys);
             if (query == null)
             {
                 return null;
