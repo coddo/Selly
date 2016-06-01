@@ -16,6 +16,12 @@ namespace Selly.DataLayer.Repositories.Base
             }
             set
             {
+                if (value == null)
+                {
+                    //LogHelper.LogException<DataRepository>("Could not create the database context.");
+                    throw new NullReferenceException("Tried to use repository with null context");
+                }
+
                 value.Configuration.LazyLoadingEnabled = false;
                 mContext = value;
             }
