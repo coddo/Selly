@@ -1,6 +1,6 @@
-﻿using Selly.DataLayer.Repositories.Base;
+﻿using Selly.DataLayer.Repositories;
 
-namespace Selly.DataLayer.Repositories
+namespace Selly.DataLayer.Extensions.Repositories
 {
     public class OrderItemRepository : BaseSinglePkRepository<OrderItem>
     {

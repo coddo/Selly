@@ -13,7 +13,7 @@ namespace Selly.Models
     using System.Collections.Generic;
     using Selly.Models.Interfaces;
     
-    public partial class ValueAddedTax : ISinglePkModel
+    public partial class ValueAddedTax : Interfaces.ISinglePkModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ValueAddedTax()

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +16,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var payrolls = await PayrollCore.GetAllAsync().ConfigureAwait(false);
-                if (payrolls == null || payrolls.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await PayrollCore.GetAllAsync().ConfigureAwait(false);
 
-                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(true, HttpStatusCode.OK, payrolls));
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -37,17 +32,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var payroll = await PayrollCore.GetForOrder(orderId).ConfigureAwait(false);
-                if (payroll == null)
-                {
-                    return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await PayrollCore.GetForOrder(orderId).ConfigureAwait(false);
 
-                return Ok(ResponseFactory<Payroll>.CreateResponse(true, HttpStatusCode.OK, payroll));
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -57,17 +48,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var payrolls = await PayrollCore.GetAllForClient(clientId).ConfigureAwait(false);
-                if (payrolls == null || payrolls.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await PayrollCore.GetAllForClient(clientId).ConfigureAwait(false);
 
-                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(true, HttpStatusCode.OK, payrolls));
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

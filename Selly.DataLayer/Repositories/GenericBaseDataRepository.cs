@@ -4,16 +4,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Selly.DataLayer.Interfaces;
 
-namespace Selly.DataLayer.Repositories.Base
+namespace Selly.DataLayer.Repositories
 {
     public abstract class GenericDataRepository<T> : BaseDataRepository
-        where T : class, new()
+        where T : class, IDataAccessObject, new()
     {
+        private DbSet<T> mDbSet;
         private bool mIsEntityTrackingOn;
         private Func<IList<string>, IQueryable<T>> mQueryGenerator;
-
-        private DbSet<T> mDbSet;
 
         protected GenericDataRepository()
         {
@@ -21,18 +21,20 @@ namespace Selly.DataLayer.Repositories.Base
             IsEntityTrackingOn = false;
         }
 
-        protected internal sealed override bool IsEntityTrackingOn
+        #region Overrides
+
+        public override sealed bool IsEntityTrackingOn
         {
             get { return mIsEntityTrackingOn; }
             set
             {
                 mIsEntityTrackingOn = value;
 
-                mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>)GenerateQuery : GenerateNonTrackingQuery;
+                mQueryGenerator = mIsEntityTrackingOn ? (Func<IList<string>, IQueryable<T>>) GenerateQuery : GenerateNonTrackingQuery;
             }
         }
 
-        protected internal sealed override Entities Context
+        public override sealed Entities Context
         {
             get { return base.Context; }
             set
@@ -43,11 +45,15 @@ namespace Selly.DataLayer.Repositories.Base
             }
         }
 
+        #endregion
+
+        #region Protected methods
+
         protected async Task<IList<T>> FetchAllAsync(IList<string> navigationProperties = null)
         {
             var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
-            var list = await dbQuery.ToListAsync();
+            var list = await dbQuery.ToListAsync().ConfigureAwait(false);
             return list;
         }
 
@@ -55,7 +61,7 @@ namespace Selly.DataLayer.Repositories.Base
         {
             var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
-            var list = await dbQuery.Where(@where).ToListAsync();
+            var list = await dbQuery.Where(@where).ToListAsync().ConfigureAwait(false);
 
             return list;
         }
@@ -64,39 +70,43 @@ namespace Selly.DataLayer.Repositories.Base
         {
             var dbQuery = mQueryGenerator.Invoke(navigationProperties);
 
-            var item = await dbQuery.FirstOrDefaultAsync(@where);
+            var item = await dbQuery.FirstOrDefaultAsync(@where).ConfigureAwait(false);
 
             return item;
         }
 
-        protected async Task<T> AddAsync(T item)
+        #endregion
+
+        #region Internal methods
+
+        internal async Task<T> AddAsync(T item)
         {
             mDbSet.Add(item);
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return item;
         }
 
-        protected async Task<IList<T>> AddAsync(IList<T> items)
+        internal async Task<IList<T>> AddAsync(IList<T> items)
         {
             mDbSet.AddRange(items);
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return items;
         }
 
-        protected async Task<T> ChangeAsync(T item)
+        internal async Task<T> ChangeAsync(T item)
         {
             Context.Entry(item).State = EntityState.Modified;
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return item;
         }
 
-        protected async Task<IList<T>> ChangeAsync(IList<T> items)
+        internal async Task<IList<T>> ChangeAsync(IList<T> items)
         {
             Context.Configuration.AutoDetectChangesEnabled = false;
 
@@ -107,24 +117,26 @@ namespace Selly.DataLayer.Repositories.Base
 
             Context.Configuration.AutoDetectChangesEnabled = true;
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return items;
         }
 
-        protected async Task RemoveAsync(T item)
+        internal async Task RemoveAsync(T item)
         {
             mDbSet.Remove(item);
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        protected async Task RemoveAsync(IEnumerable<T> items)
+        internal async Task RemoveAsync(IList<T> items)
         {
             mDbSet.RemoveRange(items);
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
         }
+
+        #endregion
 
         #region Private methods
 

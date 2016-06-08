@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Selly.BusinessLogic</RootNamespace>
     <AssemblyName>Selly.BusinessLogic</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Base\BaseCore.cs" />
-    <Compile Include="Core\Base\BaseDoublePkCore.cs" />
     <Compile Include="Core\Base\BaseSinglePkCore.cs" />
     <Compile Include="Core\ClientCore.cs" />
     <Compile Include="Core\CurrencyCore.cs" />
@@ -67,6 +67,10 @@
     <ProjectReference Include="..\Selly.DataAdapter\Selly.DataAdapter.csproj">
       <Project>{d858a4ca-0f9f-44c4-82b8-792142c40440}</Project>
       <Name>Selly.DataAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selly.DataLayer.Extensions\Selly.DataLayer.Extensions.csproj">
+      <Project>{9b08eab9-6ffb-48c8-a5e8-0e11af16f6ab}</Project>
+      <Name>Selly.DataLayer.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Selly.DataLayer\Selly.DataLayer.csproj">
       <Project>{c1a53895-b4aa-4a3f-9e9b-8559abb634f4}</Project>

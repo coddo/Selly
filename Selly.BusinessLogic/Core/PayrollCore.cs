@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Selly.BusinessLogic.Core.Base;
 using Selly.DataAdapter;
-using Selly.DataLayer;
-using Selly.DataLayer.Repositories;
-using Payroll = Selly.Models.Payroll;
+using Selly.DataLayer.Extensions;
+using Selly.DataLayer.Extensions.Repositories;
+using Selly.Models;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class PayrollCore : BaseSinglePkCore<PayrollRepository, Models.Payroll, DataLayer.Payroll>
+    public class PayrollCore : BaseSinglePkCore<PayrollRepository, Payroll, DataLayer.Payroll>
     {
         private PayrollCore()
         {
