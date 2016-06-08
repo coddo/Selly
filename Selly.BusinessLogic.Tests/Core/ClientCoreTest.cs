@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
@@ -10,11 +9,13 @@ namespace Selly.BusinessLogic.Tests.Core
     [TestClass]
     public class ClientCoreTest
     {
+        private static Currency mCurrency;
         private static Client mClient;
 
         [ClassInitialize]
         public static void Setup(TestContext context)
         {
+            CreateCurrency();
             CreateClient();
         }
 
@@ -22,6 +23,7 @@ namespace Selly.BusinessLogic.Tests.Core
         public static void Cleanup()
         {
             DeleteClient();
+            DeleteCurrency();
         }
 
         [TestMethod]
@@ -29,6 +31,7 @@ namespace Selly.BusinessLogic.Tests.Core
         {
             var newClient = EntityHelper.GenerateClient();
             newClient.Id = mClient.Id;
+            newClient.CurrencyId = mClient.CurrencyId;
 
             var response = ClientCore.UpdateAsync(newClient, true).ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -56,6 +59,7 @@ namespace Selly.BusinessLogic.Tests.Core
         private static void CreateClient()
         {
             mClient = EntityHelper.GenerateClient();
+            mClient.CurrencyId = mCurrency.Id;
 
             var response = ClientCore.CreateAsync(mClient, true).ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -81,6 +85,19 @@ namespace Selly.BusinessLogic.Tests.Core
             response.Data.FirstName.Should().Be(client.FirstName);
             response.Data.LastName.Should().Be(client.LastName);
             response.Data.Id.Should().Be(client.Id);
+        }
+
+        private static void CreateCurrency()
+        {
+            mCurrency = EntityHelper.GenerateCurreny();
+            mCurrency.Name = mCurrency.Name.Substring(0, 5);
+
+            CurrencyCore.CreateAsync(mCurrency, true).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        private static void DeleteCurrency()
+        {
+            CurrencyCore.DeleteAsync(mCurrency).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

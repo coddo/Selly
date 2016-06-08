@@ -15,5 +15,13 @@ namespace Selly.BusinessLogic.Tests
                 .Without(client => client.Payrolls)
                 .Create();
         }
+
+        public static Currency GenerateCurreny()
+        {
+            return mFixture.Build<Currency>()
+                .Without(client => client.Clients)
+                .Without(client => client.Orders)
+                .Create();
+        }
     }
 }
