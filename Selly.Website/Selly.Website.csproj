@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Selly.Website</RootNamespace>
     <AssemblyName>Selly.Website</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,13 +56,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -112,6 +113,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -187,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MakePaymentModel.cs" />
     <Compile Include="Models\SummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -250,6 +253,7 @@
     <Content Include="Views\Client.html" />
     <Content Include="Views\CreateOrder.html" />
     <Content Include="Views\Clients.html" />
+    <Content Include="Views\Order.html" />
     <Content Include="Views\SingleOrder.html" />
     <Content Include="Views\Orders.html" />
     <Content Include="Views\Inexistent.html" />
@@ -280,6 +284,10 @@
     <ProjectReference Include="..\Selly.BusinessLogic\Selly.BusinessLogic.csproj">
       <Project>{38fab177-90a5-4e8b-b82f-ec4a27056984}</Project>
       <Name>Selly.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selly.DataLayer.Extensions\Selly.DataLayer.Extensions.csproj">
+      <Project>{9b08eab9-6ffb-48c8-a5e8-0e11af16f6ab}</Project>
+      <Name>Selly.DataLayer.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Selly.DataLayer\Selly.DataLayer.csproj">
       <Project>{c1a53895-b4aa-4a3f-9e9b-8559abb634f4}</Project>

@@ -1,25 +1,22 @@
 ﻿using System;
 
-namespace Selly.DataLayer.Repositories.Base
+namespace Selly.DataLayer.Repositories
 {
     public abstract class BaseDataRepository : IDisposable
     {
+        private const string CONTEXT_NULL_REFERENCE_EXCEPTION_MESSAGE = "Tried to use repository with null context";
         private Entities mContext;
 
-        protected internal abstract bool IsEntityTrackingOn { get; set; }
+        public abstract bool IsEntityTrackingOn { get; set; }
 
-        protected internal virtual Entities Context
+        public virtual Entities Context
         {
-            get
-            {
-                return mContext;
-            }
+            get { return mContext; }
             set
             {
                 if (value == null)
                 {
-                    //LogHelper.LogException<DataRepository>("Could not create the database context.");
-                    throw new NullReferenceException("Tried to use repository with null context");
+                    throw new NullReferenceException(CONTEXT_NULL_REFERENCE_EXCEPTION_MESSAGE);
                 }
 
                 value.Configuration.LazyLoadingEnabled = false;

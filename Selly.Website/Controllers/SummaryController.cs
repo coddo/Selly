@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 using Selly.Website.Models;
 
 namespace Selly.Website.Controllers
@@ -17,30 +16,36 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var products = await ProductCore.GetAllAsync().ConfigureAwait(false);
-                var orders = await OrderCore.GetAllAsync().ConfigureAwait(false);
-                var orderItems = await OrderItemCore.GetAllAsync().ConfigureAwait(false);
-                var clients = await ClientCore.GetAllAsync().ConfigureAwait(false);
-                var payments = await PayrollCore.GetAllAsync().ConfigureAwait(false);
+                var productsResponse = await ProductCore.GetAllAsync().ConfigureAwait(false);
+                var ordersResponse = await OrderCore.GetAllAsync().ConfigureAwait(false);
+                var orderItemsResponse = await OrderItemCore.GetAllAsync().ConfigureAwait(false);
+                var clientsResponse = await ClientCore.GetAllAsync().ConfigureAwait(false);
+                var paymentsResponse = await PayrollCore.GetAllAsync().ConfigureAwait(false);
 
-                var totalIncomeValue = payments.Sum(payment => payment.Value);
-                var totalOrdersValue = orderItems.Sum(orderItem => orderItem.Price * orderItem.Quantity);
+                if (!productsResponse.Success || !orderItemsResponse.Success || !orderItemsResponse.Success || !clientsResponse.Success ||
+                    !paymentsResponse.Success)
+                {
+                    return Ok(ResponseFactory.CreateResponse(false, ResponseCode.Error));
+                }
+
+                var totalIncomeValue = paymentsResponse.Data.Sum(payment => payment.Value);
+                var totalOrdersValue = orderItemsResponse.Data.Sum(orderItem => orderItem.Price * orderItem.Quantity);
 
                 var model = new SummaryModel
                 {
-                    NumberOfClients = clients.Count,
-                    NumberOfOrders = orders.Count,
-                    NumberOfPayments = payments.Count,
-                    NumberOfProducts = products.Count,
+                    NumberOfClients = clientsResponse.Data.Count,
+                    NumberOfOrders = ordersResponse.Data.Count,
+                    NumberOfPayments = paymentsResponse.Data.Count,
+                    NumberOfProducts = productsResponse.Data.Count,
                     TotalIncomeValue = totalIncomeValue,
                     TotalOrdersValue = totalOrdersValue
                 };
 
-                return Ok(ResponseFactory<SummaryModel>.CreateResponse(true, HttpStatusCode.OK, model));
+                return Ok(ResponseFactory<SummaryModel>.CreateResponse(true, ResponseCode.Success, model));
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<SummaryModel>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<SummaryModel>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

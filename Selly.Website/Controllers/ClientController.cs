@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +14,12 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var model = await ClientCore.GetAsync(clientId, new[]
+                var response = await ClientCore.GetAsync(clientId, new[]
                 {
                     nameof(Client.Currency)
                 });
 
-                if (model == null)
-                {
-                    return Ok(ResponseFactory.CreateResponse(false, HttpStatusCode.NotFound));
-                }
-
-                return Ok(ResponseFactory<Client>.CreateResponse(true, HttpStatusCode.OK, model));
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -41,17 +33,12 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var modelCollection = await ClientCore.GetAllAsync(new[]
+                var response = await ClientCore.GetAllAsync(new[]
                 {
                     nameof(Client.Currency)
                 });
 
-                if (modelCollection == null)
-                {
-                    return Ok(ResponseFactory.CreateResponse(false, HttpStatusCode.NotFound));
-                }
-
-                return Ok(ResponseFactory<IList<Client>>.CreateResponse(true, HttpStatusCode.OK, modelCollection));
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -65,13 +52,9 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var model = await ClientCore.CreateAsync(client);
-                if (model == null)
-                {
-                    return Ok(ResponseFactory.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
+                var response = await ClientCore.CreateAsync(client).ConfigureAwait(false);
 
-                return Ok(ResponseFactory<Client>.CreateResponse(true, HttpStatusCode.OK, model));
+                return Json(response);
             }
             catch (Exception e)
             {

@@ -13,7 +13,7 @@ namespace Selly.Models
     using System.Collections.Generic;
     using Selly.Models.Interfaces;
     
-    public partial class Order : ISinglePkModel
+    public partial class Order : Interfaces.ISinglePkModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()

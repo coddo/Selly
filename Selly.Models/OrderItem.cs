@@ -13,7 +13,7 @@ namespace Selly.Models
     using System.Collections.Generic;
     using Selly.Models.Interfaces;
     
-    public partial class OrderItem : ISinglePkModel
+    public partial class OrderItem : Interfaces.ISinglePkModel
     {
         public System.Guid Id { get; set; }
         public System.Guid OrderId { get; set; }

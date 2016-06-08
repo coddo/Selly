@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +16,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var orderItems = await OrderItemCore.GetAllAsync().ConfigureAwait(false);
-                if (orderItems == null || orderItems.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await OrderItemCore.GetAllAsync().ConfigureAwait(false);
 
-                return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(true, HttpStatusCode.OK, orderItems));
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -37,13 +32,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var result = await OrderItemCore.UpdateAsync(orderItem).ConfigureAwait(false);
+                var response = await OrderItemCore.UpdateAsync(orderItem).ConfigureAwait(false);
 
-                return Ok(result);
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

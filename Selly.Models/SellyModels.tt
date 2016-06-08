@@ -329,9 +329,14 @@ public class CodeStringGenerator
 	 {
 		 return (entity.KeyMembers.Count == 1 && 
 		 entity.KeyMembers[0].Name == "Id" &&
-		 entity.Name != "AspNetUser")
-			? "ISinglePkModel" 
-			: "IModel";
+		 IsNotInGuidBlackList(entity.Name))
+			? "Interfaces.ISinglePkModel" 
+			: "Interfaces.IModel";
+	 }
+
+	 private bool IsNotInGuidBlackList(string name) 
+	 {
+		 return name != "AspNetUser" && name != "AspNetRole";
 	 }
     
     public string EnumOpening(SimpleType enumType)

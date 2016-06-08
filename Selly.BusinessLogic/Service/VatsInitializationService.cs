@@ -28,7 +28,7 @@ namespace Selly.BusinessLogic.Service
             Task.Run(async () =>
             {
                 var existingVats = await VatCore.GetAllAsync().ConfigureAwait(false);
-                if (existingVats?.Count != 0)
+                if (existingVats.Data != null && existingVats.Data.Count != 0)
                 {
                     return;
                 }

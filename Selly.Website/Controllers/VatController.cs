@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +16,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var valueAddedTaxes = await VatCore.GetAllAsync().ConfigureAwait(false);
-                if (valueAddedTaxes == null || valueAddedTaxes.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<ValueAddedTax>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await VatCore.GetAllAsync().ConfigureAwait(false);
 
-                return Ok(ResponseFactory<IList<ValueAddedTax>>.CreateResponse(true, HttpStatusCode.OK, valueAddedTaxes));
+                return Ok(response);
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<ValueAddedTax>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<ValueAddedTax>>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

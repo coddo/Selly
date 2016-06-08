@@ -27,7 +27,7 @@
                  controller: 'OrdersController'
              })
              .when('/orders/:orderId', {
-                 templateUrl: '/Views/SingleOrder.html',
+                 templateUrl: '/Views/Order.html',
                  controller: 'OrderController'
              })
             //.when('/scrisoare', {

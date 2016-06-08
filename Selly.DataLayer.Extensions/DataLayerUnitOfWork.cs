@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Selly.DataLayer.Extensions.Repositories;
 using Selly.DataLayer.Repositories;
-using Selly.DataLayer.Repositories.Base;
 
-namespace Selly.DataLayer
+namespace Selly.DataLayer.Extensions
 {
     public class DataLayerUnitOfWork : IDisposable
     {

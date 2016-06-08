@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
     public class OrderController : ApiController
     {
         [HttpGet]
-        [ActionName("GetAll")]
-        public async Task<IHttpActionResult> GetAll(string orderBy = "", bool orderAscending = true)
+        [ActionName("Get")]
+        public async Task<IHttpActionResult> Get(Guid orderId)
         {
             try
             {
-                var result = await OrderCore.GetAllAsync(orderBy, orderAscending, new[]
+                var result = await OrderCore.GetAsync(orderId, new[]
                 {
                     nameof(Order.Client),
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}",
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}.{nameof(Product.ValueAddedTax)}",
                     nameof(Order.OrderItems),
                     nameof(Order.Payrolls),
                     nameof(Order.Currency)
@@ -29,7 +30,31 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetAll")]
+        public async Task<IHttpActionResult> GetAll(string orderBy = "", bool orderAscending = true)
+        {
+            try
+            {
+                var response = await OrderCore.GetAllAsync(orderBy, orderAscending, new[]
+                {
+                    nameof(Order.Client),
+                    nameof(Order.OrderItems),
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}",
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}.{nameof(Product.ValueAddedTax)}",
+                    nameof(Order.Payrolls),
+                    nameof(Order.Currency)
+                }).ConfigureAwait(false);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -51,7 +76,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -67,7 +92,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -83,7 +108,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -99,7 +124,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -115,7 +140,7 @@ namespace Selly.Website.Controllers
             }
             catch (Exception)
             {
-                return Ok(ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
 

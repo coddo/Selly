@@ -1,17 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using System;
-using System.Linq;
 
 namespace Selly.BusinessLogic.Service
 {
     public class MockDataInitializationService
     {
-        private readonly Product[] mProducts;
-        private readonly Client[] mClients;
-
         private static MockDataInitializationService mInstance;
+        private readonly Client[] mClients;
+        private readonly Product[] mProducts;
 
         private MockDataInitializationService()
         {
@@ -46,7 +45,7 @@ namespace Selly.BusinessLogic.Service
                     Name = "Cioco Milka",
                     Price = 5.23,
                     VatId = Guid.Parse("0BE69C70-ADF1-4321-B022-20583F207526")
-                },
+                }
             };
 
             mClients = new[]
@@ -74,7 +73,7 @@ namespace Selly.BusinessLogic.Service
                     Email = "client4@email.com",
                     FirstName = "Client-First4",
                     LastName = "Client-Last4"
-                },
+                }
             };
         }
 
@@ -87,20 +86,31 @@ namespace Selly.BusinessLogic.Service
                 Task.Run(async () =>
                 {
                     var existingProducts = await ProductCore.GetAllAsync().ConfigureAwait(false);
-                    if (existingProducts?.Count != 0)
+                    if (existingProducts.Data != null && existingProducts.Data.Count != 0)
                     {
                         return;
                     }
-                    await ProductCore.CreateAsync(mProducts);
+
+                    await ProductCore.CreateAsync(mProducts).ConfigureAwait(false);
 
                     var existingClients = await ClientCore.GetAllAsync().ConfigureAwait(false);
-                    if (existingClients?.Count != 0)
+                    if (existingClients.Data != null && existingClients.Data.Count != 0)
                     {
                         return;
                     }
 
                     var currencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
-                    var currency = currencies.FirstOrDefault(c => c.Name == "RON");
+                    if (!currencies.Success || currencies.Data == null || currencies.Data.Count == 0)
+                    {
+                        return;
+                    }
+
+                    var currency = currencies.Data.FirstOrDefault(c => c.Name == "RON");
+                    if (currency == null)
+                    {
+                        return;
+                    }
+
                     foreach (var client in mClients)
                     {
                         client.CurrencyId = currency.Id;
@@ -109,8 +119,9 @@ namespace Selly.BusinessLogic.Service
                     await ClientCore.CreateAsync(mClients).ConfigureAwait(false);
                 }).ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch
+            catch (Exception ex)
             {
+                // ignored
             }
         }
     }

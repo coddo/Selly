@@ -30,7 +30,7 @@
             return API.getAllOrders(function (success) {
                 HelperService.StopLoading('loadOrders');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadOrders');
@@ -43,7 +43,7 @@
             return API.getAllOrdersForUser({ userId: userId }, function (success) {
                 HelperService.StopLoading('loadOrdersForUser');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadOrdersForUser');
