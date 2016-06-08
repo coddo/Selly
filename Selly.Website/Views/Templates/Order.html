@@ -15,8 +15,8 @@
 
     <div>
         <span style="float:right;font-size:26px;">
-            Total: {{order.total}} {{order.currency.name}}
+            Total: {{order.total | number}} {{order.currency.name}} (incl. VAT)
         </span>
-        <button class="btn btn-primary btn-lg">View details</button>
+        <a ng-href="/orders/{{order.id}}" class="btn btn-primary btn-lg" >View details</a>
     </div>
 </div>

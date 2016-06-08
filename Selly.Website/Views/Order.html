@@ -1,0 +1,34 @@
+﻿
+<div class="container">
+    <h1>
+        Order id: {{order.id}}
+    </h1>
+    <hr />
+
+    <h3>Client: {{order.client.firstName + ' ' + order.client.lastName}}</h3>
+    <h3>Date: {{order.date | date:'short'}}</h3>
+
+    <hr />
+
+    <h3>Sale Type: <span class="label label-default">{{order.saleType==0?'NORMAL':(order.saleType==1?'EXCHANGE':'RETURN')}}</span></h3>
+
+    <br />
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon alert-info">Status</span>
+        <span class="input-group-addon alert-success">{{order.status==0?'CREATED':(order.status==1?'FINISHED':'CANCELLED')}}</span>
+    </div>
+
+    <br />
+
+    <span style="font-size:26px;">
+        Total: {{order.total | number}} {{order.currency.name}} (incl. VAT)
+    </span>
+
+    <hr />
+
+    <div class="btn-group btn-group-lg" role="group">
+        <button class="btn btn-success">CONFIRM the order!</button>
+        <button class="btn btn-danger">CANCEL the order!</button>
+    </div>
+
+</div>

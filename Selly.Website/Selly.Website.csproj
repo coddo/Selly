@@ -252,6 +252,7 @@
     <Content Include="Views\Client.html" />
     <Content Include="Views\CreateOrder.html" />
     <Content Include="Views\Clients.html" />
+    <Content Include="Views\Order.html" />
     <Content Include="Views\SingleOrder.html" />
     <Content Include="Views\Orders.html" />
     <Content Include="Views\Inexistent.html" />

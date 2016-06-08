@@ -11,6 +11,30 @@ namespace Selly.Website.Controllers
     public class OrderController : ApiController
     {
         [HttpGet]
+        [ActionName("Get")]
+        public async Task<IHttpActionResult> Get(Guid orderId)
+        {
+            try
+            {
+                var result = await OrderCore.GetAsync(orderId, new[]
+                {
+                    nameof(Order.Client),
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}",
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}.{nameof(Product.ValueAddedTax)}",
+                    nameof(Order.OrderItems),
+                    nameof(Order.Payrolls),
+                    nameof(Order.Currency)
+                }).ConfigureAwait(false);
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
+            }
+        }
+
+        [HttpGet]
         [ActionName("GetAll")]
         public async Task<IHttpActionResult> GetAll(string orderBy = "", bool orderAscending = true)
         {
@@ -20,6 +44,8 @@ namespace Selly.Website.Controllers
                 {
                     nameof(Order.Client),
                     nameof(Order.OrderItems),
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}",
+                    $"{nameof(Order.OrderItems)}.{nameof(OrderItem.Product)}.{nameof(Product.ValueAddedTax)}",
                     nameof(Order.Payrolls),
                     nameof(Order.Currency)
                 }).ConfigureAwait(false);
