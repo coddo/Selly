@@ -60,7 +60,6 @@
     </Compile>
     <Compile Include="Interfaces\IDataAccessObject.cs" />
     <Compile Include="Interfaces\ISinglePkDataAccessObject.cs" />
-    <Compile Include="Models\PkWrapper.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>
