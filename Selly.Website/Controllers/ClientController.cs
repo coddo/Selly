@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -23,7 +25,9 @@ namespace Selly.Website.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                LogHelper.LogException<ClientController>(e);
+
+                return Ok(ResponseFactory.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -42,7 +46,9 @@ namespace Selly.Website.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                LogHelper.LogException<ClientController>(e);
+
+                return Ok(ResponseFactory.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -58,7 +64,9 @@ namespace Selly.Website.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                LogHelper.LogException<ClientController>(e);
+
+                return Ok(ResponseFactory.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

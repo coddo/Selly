@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models.Common.Response;
 using Selly.Website.Models;
@@ -43,8 +44,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(ResponseFactory<SummaryModel>.CreateResponse(true, ResponseCode.Success, model));
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<SummaryController>(e);
+
                 return Ok(ResponseFactory<SummaryModel>.CreateResponse(false, ResponseCode.Error));
             }
         }
