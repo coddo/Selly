@@ -117,7 +117,7 @@ namespace Selly.BusinessLogic.Core
                 var orderRepository = unitOfWork.TrackingRepository<OrderRepository>();
 
                 var dbModel = order.CopyTo<DataLayer.Order>();
-                var updatedOrder = await orderRepository.UpdateAsync(dbModel).ConfigureAwait(false);
+                var updatedOrder = await orderRepository.UpdateAsync(dbModel, true).ConfigureAwait(false);
 
                 if (updatedOrder == null)
                 {

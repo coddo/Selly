@@ -5,6 +5,7 @@ using System.Web.Http;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
 using Selly.Models.Common.Response;
+using Selly.Website.Models;
 
 namespace Selly.Website.Controllers
 {
@@ -55,6 +56,21 @@ namespace Selly.Website.Controllers
             catch (Exception)
             {
                 return Ok(ResponseFactory<IList<Payroll>>.CreateResponse(false, ResponseCode.Error));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> MakePayment([FromBody] MakePaymentModel model)
+        {
+            try
+            {
+                var response = await PayrollCore.MakePayment(model.OrderId, model.ClientId).ConfigureAwait(false);
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
             }
         }
     }
