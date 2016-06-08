@@ -22,7 +22,7 @@ By using the Response type (from BLL) with OK status code instead of the classic
 - Proper IOC for repositories, easily configurable (datalayer.extensions -> unit of work)
 - Factory pattern (BLL.Models.Response)
 - AngularJS, JQuery, Bootstrap (for UI)
-- Microsoft testing module and FluentAssertions for Unit Tests and Integration Tests
+- Microsoft testing module, FluentAssertions and Autofixture for Unit Tests and Integration Tests
 - ITextSharp for writing documents
 - NLog for logging purposes
 And more on the road
