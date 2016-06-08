@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
 using Selly.Models.Common.Response;
@@ -28,8 +29,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -52,8 +55,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -74,8 +79,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<IList<Order>>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -90,8 +97,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -106,8 +115,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -122,8 +133,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -138,8 +151,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 return Ok(ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -151,11 +166,13 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                // A PDF/CSV FILE WAS INTENDED TO BE DOWNLOADED BASED ON THE ORDER, ORDERITEMS AND PAYROLL
+                // A PDF OR CSV FILE WAS INTENDED TO BE DOWNLOADED BASED ON THE ORDER, ORDERITEMS AND PAYROLL
                 throw new NotImplementedException();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderController>(e);
+
                 throw;
             }
         }

@@ -239,6 +239,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="NLog.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -281,6 +282,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LoggingService\LoggingService.csproj">
+      <Project>{ECF4776D-1D38-4EB2-884F-7A21B20C5996}</Project>
+      <Name>LoggingService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Selly.BusinessLogic\Selly.BusinessLogic.csproj">
       <Project>{38fab177-90a5-4e8b-b82f-ec4a27056984}</Project>
       <Name>Selly.BusinessLogic</Name>

@@ -60,6 +60,9 @@
     </Compile>
     <Compile Include="Interfaces\IDataAccessObject.cs" />
     <Compile Include="Interfaces\ISinglePkDataAccessObject.cs" />
+    <Compile Include="LogEntry.cs">
+      <DependentUpon>SellyEntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Order.cs">
       <DependentUpon>SellyEntityModel.tt</DependentUpon>
     </Compile>
@@ -124,7 +127,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LoggingService\LoggingService.csproj">
+      <Project>{ECF4776D-1D38-4EB2-884F-7A21B20C5996}</Project>
+      <Name>LoggingService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

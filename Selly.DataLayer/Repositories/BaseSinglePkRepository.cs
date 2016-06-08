@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoggingService;
 using Selly.DataLayer.Interfaces;
 
 namespace Selly.DataLayer.Repositories
@@ -53,12 +54,13 @@ namespace Selly.DataLayer.Repositories
 
         protected override bool ValidateEntity(T entity)
         {
-            if (entity != null && entity.Id != Guid.Empty)
+            if (entity == null || entity.Id == Guid.Empty)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            LogHelper.LogException<BaseSinglePkRepository<T>>("Attempted to create or modify a null or invalid entity");
+            return true;
         }
 
         #endregion

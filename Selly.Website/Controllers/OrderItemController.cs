@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
 using Selly.Models.Common.Response;
@@ -20,8 +21,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderItemController>(e);
+
                 return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, ResponseCode.Error));
             }
         }
@@ -36,8 +39,10 @@ namespace Selly.Website.Controllers
 
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogHelper.LogException<OrderItemController>(e);
+
                 return Ok(ResponseFactory<IList<OrderItem>>.CreateResponse(false, ResponseCode.Error));
             }
         }
