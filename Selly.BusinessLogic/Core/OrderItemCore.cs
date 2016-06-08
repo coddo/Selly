@@ -1,23 +1,22 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Selly.BusinessLogic.Core.Base;
 using Selly.BusinessLogic.Validation;
 using Selly.DataAdapter;
-using Selly.DataLayer;
-using Selly.DataLayer.Repositories;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.DataLayer.Extensions;
+using Selly.DataLayer.Extensions.Repositories;
+using Selly.Models;
+using Selly.Models.Common.Response;
 using Selly.Models.Enums;
-using OrderItem = Selly.Models.OrderItem;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class OrderItemCore : BaseCore<OrderItemRepository, OrderItem, DataLayer.OrderItem>
+    public class OrderItemCore : BaseSinglePkCore<OrderItemRepository, OrderItem, DataLayer.OrderItem>
     {
         private OrderItemCore()
         {
         }
 
-        public new static async Task<Response<OrderItem>> UpdateAsync(OrderItem orderItem)
+        public static async Task<Response<OrderItem>> UpdateAsync(OrderItem orderItem)
         {
             using (var unitOfWork = new DataLayerUnitOfWork())
             {
@@ -25,7 +24,7 @@ namespace Selly.BusinessLogic.Core
 
                 if (!SalesValidator.ValidateOrderItem(orderItem, (SaleType) order.SaleType))
                 {
-                    return ResponseFactory<OrderItem>.CreateResponse(false, HttpStatusCode.BadRequest);
+                    return ResponseFactory<OrderItem>.CreateResponse(false, ResponseCode.ErrorInvalidInput);
                 }
 
                 var dbModel = orderItem.CopyTo<DataLayer.OrderItem>();
@@ -33,10 +32,10 @@ namespace Selly.BusinessLogic.Core
 
                 if (result == null)
                 {
-                    return ResponseFactory<OrderItem>.CreateResponse(false, HttpStatusCode.BadRequest);
+                    return ResponseFactory<OrderItem>.CreateResponse(false, ResponseCode.Error);
                 }
 
-                return ResponseFactory<OrderItem>.CreateResponse(true, HttpStatusCode.OK, result.CopyTo<OrderItem>());
+                return ResponseFactory<OrderItem>.CreateResponse(true, ResponseCode.Success, result.CopyTo<OrderItem>());
             }
         }
     }

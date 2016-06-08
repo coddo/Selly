@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +17,15 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var currencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
-                if (currencies == null || currencies.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<Currency>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
+                var response = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
 
-                return Ok(ResponseFactory<IList<Currency>>.CreateResponse(true, HttpStatusCode.OK, currencies));
+                return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Ok(ResponseFactory<IList<Currency>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                LogHelper.LogException<CurrencyController>(e);
+
+                return Ok(ResponseFactory<IList<Currency>>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

@@ -44,14 +44,20 @@
     <Compile Include="Client.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Common\ClientServerInteraction\Response.cs" />
-    <Compile Include="Common\ClientServerInteraction\ResponseFactory.cs" />
+    <Compile Include="Common\Response\Response.cs" />
+    <Compile Include="Common\Response\ResponseCode.cs" />
+    <Compile Include="Common\Response\ResponseExtensions.cs" />
+    <Compile Include="Common\Response\ResponseFactory.cs" />
     <Compile Include="Currency.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums\EnumExtensions\EnumExtensions.cs" />
     <Compile Include="Enums\OrderStatus.cs" />
     <Compile Include="Interfaces\IModel.cs" />
+    <Compile Include="Interfaces\ISinglePkModel.cs" />
+    <Compile Include="LogEntry.cs">
+      <DependentUpon>SellyModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Order.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>
@@ -78,6 +84,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

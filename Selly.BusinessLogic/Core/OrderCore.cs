@@ -1,75 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Selly.BusinessLogic.Core.Base;
 using Selly.BusinessLogic.Validation;
 using Selly.DataAdapter;
-using Selly.DataLayer;
-using Selly.DataLayer.Repositories;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.DataLayer.Extensions;
+using Selly.DataLayer.Extensions.Repositories;
+using Selly.Models;
+using Selly.Models.Common.Response;
 using Selly.Models.Enums;
 using Selly.Models.Enums.EnumExtensions;
-using Order = Selly.Models.Order;
+using Payroll = Selly.DataLayer.Payroll;
 
 namespace Selly.BusinessLogic.Core
 {
-    public class OrderCore : BaseCore<OrderRepository, Order, DataLayer.Order>
+    public class OrderCore : BaseSinglePkCore<OrderRepository, Order, DataLayer.Order>
     {
         private OrderCore()
         {
         }
 
-        public new static async Task<Response<Order>> CreateAsync(Order order)
+        public new static async Task<Response<Order>> CreateAsync(Order order, bool refreshFromDb = false, IList<string> navigationProperties = null)
         {
             Parallel.ForEach(order.OrderItems.Where(orderItem => orderItem.Id == Guid.Empty), orderItem => { orderItem.Id = Guid.NewGuid(); });
 
             if (!SalesValidator.ValidateOrder(order))
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+                return ResponseFactory<Order>.CreateResponse(false, ResponseCode.ErrorInvalidInput);
             }
 
             order.Date = DateTime.Now;
             order.Status = OrderStatus.Created.ToInt();
 
-            var result = await BaseCore<OrderRepository, Order, DataLayer.Order>.CreateAsync(order).ConfigureAwait(false);
-            if (result == null)
+            using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
-            }
+                var createdOrder =
+                    await orderRepository.CreateAsync(order.CopyTo<DataLayer.Order>(), refreshFromDb, navigationProperties).ConfigureAwait(false);
 
-            return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, result);
+                if (createdOrder == null)
+                {
+                    return ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error);
+                }
+
+                return ResponseFactory<Order>.CreateResponse(true, ResponseCode.Success, createdOrder.CopyTo<Order>());
+            }
         }
 
-        public new static async Task<Response<Order>> UpdateAsync(Order order)
+        public new static async Task<Response<Order>> UpdateAsync(Order order, bool refreshFromDb = false, IList<string> navigationProperties = null)
         {
             if (!SalesValidator.ValidateOrder(order, false))
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+                return ResponseFactory<Order>.CreateResponse(false, ResponseCode.ErrorInvalidInput);
             }
 
-            var result = await BaseCore<OrderRepository, Order, DataLayer.Order>.UpdateAsync(order).ConfigureAwait(false);
-            if (result == null)
+            using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
-            }
+                var updatedOrder =
+                    await orderRepository.UpdateAsync(order.CopyTo<DataLayer.Order>(), refreshFromDb, navigationProperties).ConfigureAwait(false);
 
-            return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, result);
+                if (updatedOrder == null)
+                {
+                    return ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error);
+                }
+
+                return ResponseFactory<Order>.CreateResponse(true, ResponseCode.Success, updatedOrder.CopyTo<Order>());
+            }
         }
 
         public static async Task<Response<IList<Order>>> GetAllAsync(string orderBy, bool orderAscending, IList<string> navigationProperties = null)
         {
-            var orders = await GetAllAsync(navigationProperties).ConfigureAwait(false);
-
-            if (orders == null || orders.Count == 0)
+            using (var orderRepository = DataLayerUnitOfWork.Repository<OrderRepository>())
             {
-                return ResponseFactory<IList<Order>>.CreateResponse(false, HttpStatusCode.NoContent);
+                var orders = await orderRepository.GetAllAsync(navigationProperties).ConfigureAwait(false);
+
+                if (orders == null || orders.Count == 0)
+                {
+                    return ResponseFactory<IList<Order>>.CreateResponse(true, ResponseCode.SuccessNoContent);
+                }
+
+                var sortedOrders = SortOrders(orders.CopyTo<Order>(), orderBy, orderAscending);
+
+                return ResponseFactory<IList<Order>>.CreateResponse(true, ResponseCode.Success, sortedOrders);
             }
-
-            orders = SortOrders(orders, orderBy, orderAscending);
-
-            return ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, orders);
         }
 
         public static async Task<Response<IList<Order>>> GetAllForUserAsync(Guid clientId, string orderBy, bool orderAscending,
@@ -81,12 +94,12 @@ namespace Selly.BusinessLogic.Core
 
                 if (orders == null || orders.Count == 0)
                 {
-                    return ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.NoContent);
+                    return ResponseFactory<IList<Order>>.CreateResponse(true, ResponseCode.SuccessNoContent);
                 }
 
                 var sortedOrders = SortOrders(orders.CopyTo<Order>(), orderBy, orderAscending);
 
-                return ResponseFactory<IList<Order>>.CreateResponse(true, HttpStatusCode.OK, sortedOrders);
+                return ResponseFactory<IList<Order>>.CreateResponse(true, ResponseCode.Success, sortedOrders);
             }
         }
 
@@ -94,7 +107,7 @@ namespace Selly.BusinessLogic.Core
         {
             if (!SalesValidator.ValidateOrder(order, false))
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+                return ResponseFactory<Order>.CreateResponse(false, ResponseCode.ErrorInvalidInput);
             }
 
             order.Status = OrderStatus.Finalized.ToInt();
@@ -104,11 +117,11 @@ namespace Selly.BusinessLogic.Core
                 var orderRepository = unitOfWork.TrackingRepository<OrderRepository>();
 
                 var dbModel = order.CopyTo<DataLayer.Order>();
-                var updatedOrder = await orderRepository.UpdateAsync(dbModel).ConfigureAwait(false);
+                var updatedOrder = await orderRepository.UpdateAsync(dbModel, true).ConfigureAwait(false);
 
                 if (updatedOrder == null)
                 {
-                    return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+                    return ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error);
                 }
 
                 return await CreatePayroll(order, unitOfWork, orderRepository);
@@ -119,7 +132,7 @@ namespace Selly.BusinessLogic.Core
         {
             if (!SalesValidator.ValidateOrder(order, false))
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.BadRequest);
+                return ResponseFactory<Order>.CreateResponse(false, ResponseCode.ErrorInvalidInput);
             }
 
             order.Status = OrderStatus.Cancelled.ToInt();
@@ -131,10 +144,10 @@ namespace Selly.BusinessLogic.Core
 
                 if (updatedOrder == null)
                 {
-                    return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+                    return ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error);
                 }
 
-                return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, order);
+                return ResponseFactory<Order>.CreateResponse(true, ResponseCode.Success, order);
             }
         }
 
@@ -158,10 +171,10 @@ namespace Selly.BusinessLogic.Core
             payroll = await unitOfWork.TrackingRepository<PayrollRepository>().CreateAsync(payroll).ConfigureAwait(false);
             if (payroll == null)
             {
-                return ResponseFactory<Order>.CreateResponse(false, HttpStatusCode.InternalServerError);
+                return ResponseFactory<Order>.CreateResponse(false, ResponseCode.Error);
             }
 
-            return ResponseFactory<Order>.CreateResponse(true, HttpStatusCode.OK, order);
+            return ResponseFactory<Order>.CreateResponse(true, ResponseCode.Success, order);
         }
 
         private static IList<Order> SortOrders(IList<Order> orders, string orderBy, bool orderAscending)
@@ -193,9 +206,7 @@ namespace Selly.BusinessLogic.Core
                     return orders;
             }
 
-            return orderAscending
-                       ? orders.OrderBy(orderClause).ToArray()
-                       : orders.OrderByDescending(orderClause).ToArray();
+            return orderAscending ? orders.OrderBy(orderClause).ToArray() : orders.OrderByDescending(orderClause).ToArray();
         }
 
         #endregion

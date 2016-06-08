@@ -18,7 +18,7 @@
                 success.data.forEach(function (order) {
                     order.total = 0;
                     order.orderItems.forEach(function (item) {
-                        order.total += item.price * item.quantity;
+                        order.total += item.price * item.quantity * (1 + item.product.valueAddedTax.value / 100);
                     });
                 });
             });

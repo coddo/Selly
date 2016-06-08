@@ -313,14 +313,31 @@ public class CodeStringGenerator
     
     public string EntityClassOpening(EntityType entity)
     {
+		  var entityInterface = GetInterfaceForEntity(entity);
+
         return string.Format(
             CultureInfo.InvariantCulture,
-            "{0} {1}partial class {2}{3} : IDataAccessObject",
+            "{0} {1}partial class {2}{3} : {4}",
             Accessibility.ForType(entity),
             _code.SpaceAfter(_code.AbstractOption(entity)),
             _code.Escape(entity),
-            _code.StringBefore(" : ", _typeMapper.GetTypeName(entity.BaseType)));
+            _code.StringBefore(" : ", _typeMapper.GetTypeName(entity.BaseType)),
+				entityInterface);
     }
+
+	 private string GetInterfaceForEntity(EntityType entity) 
+	 {
+		 return (entity.KeyMembers.Count == 1 && 
+		 entity.KeyMembers[0].Name == "Id" &&
+		 IsNotInGuidBlackList(entity.Name))
+			? "Interfaces.ISinglePkDataAccessObject" 
+			: "Interfaces.IDataAccessObject";
+	 }
+
+	 private bool IsNotInGuidBlackList(string name) 
+	 {
+		 return name != "AspNetUser" && name != "AspNetRole";
+	 }
     
     public string EnumOpening(SimpleType enumType)
     {
@@ -330,7 +347,7 @@ public class CodeStringGenerator
             Accessibility.ForType(enumType),
             _code.Escape(enumType),
             _code.Escape(_typeMapper.UnderlyingClrType(enumType)));
-        }
+    }
     
     public void WriteFunctionParameters(EdmFunction edmFunction, Action<string, string, string, string> writeParameter)
     {

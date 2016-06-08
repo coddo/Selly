@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LoggingService;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
-using Selly.Models.Common.ClientServerInteraction;
+using Selly.Models.Common.Response;
 
 namespace Selly.Website.Controllers
 {
@@ -17,17 +17,15 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var createdProduct = await ProductCore.CreateAsync(product).ConfigureAwait(false);
-                if (createdProduct == null)
-                {
-                    return Ok(ResponseFactory<Product>.CreateResponse(false, HttpStatusCode.BadRequest));
-                }
+                var response = await ProductCore.CreateAsync(product).ConfigureAwait(false);
 
-                return Ok(ResponseFactory<Product>.CreateResponse(true, HttpStatusCode.OK, createdProduct));
+                return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Ok(ResponseFactory<Product>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                LogHelper.LogException<ProductController>(e);
+
+                return Ok(ResponseFactory<Product>.CreateResponse(false, ResponseCode.Error));
             }
         }
 
@@ -37,21 +35,18 @@ namespace Selly.Website.Controllers
         {
             try
             {
-                var products = await ProductCore.GetAllAsync(new[]
+                var response = await ProductCore.GetAllAsync(new[]
                 {
                     nameof(Product.ValueAddedTax)
                 }).ConfigureAwait(false);
 
-                if (products == null || products.Count == 0)
-                {
-                    return Ok(ResponseFactory<IList<Product>>.CreateResponse(true, HttpStatusCode.NoContent));
-                }
-
-                return Ok(ResponseFactory<IList<Product>>.CreateResponse(true, HttpStatusCode.OK, products));
+                return Ok(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Ok(ResponseFactory<IList<Product>>.CreateResponse(false, HttpStatusCode.InternalServerError));
+                LogHelper.LogException<ProductController>(e);
+
+                return Ok(ResponseFactory<IList<Product>>.CreateResponse(false, ResponseCode.Error));
             }
         }
     }

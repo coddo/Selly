@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Selly.DataLayer.Extensions.Repositories;
 using Selly.DataLayer.Repositories;
-using Selly.DataLayer.Repositories.Base;
 
-namespace Selly.DataLayer
+namespace Selly.DataLayer.Extensions
 {
     public class DataLayerUnitOfWork : IDisposable
     {
@@ -19,12 +18,12 @@ namespace Selly.DataLayer
 
         public DataLayerUnitOfWork()
         {
+            mContext = new Entities();
+
             if (mRepositories == null)
             {
                 InitializeUnitOfWork();
             }
-
-            mContext = new Entities();
         }
 
         #region Tracking Repo Factory logic
@@ -66,15 +65,31 @@ namespace Selly.DataLayer
 
         private static void InitializeUnitOfWork()
         {
-            mRepositories = new ConcurrentDictionary<Type, Func<BaseDataRepository>>();
+            mRepositories = new Dictionary<Type, Func<BaseDataRepository>>
+            {
+                {
+                    typeof (ClientRepository), () => new ClientRepository()
+                },
+                {
+                    typeof (CurrencyRepository), () => new CurrencyRepository()
+                },
+                {
+                    typeof (OrderItemRepository), () => new OrderItemRepository()
+                },
+                {
+                    typeof (OrderRepository), () => new OrderRepository()
+                },
+                {
+                    typeof (PayrollRepository), () => new PayrollRepository()
+                },
+                {
+                    typeof (ProductRepository), () => new ProductRepository()
+                },
+                {
+                    typeof (VatRepository), () => new VatRepository()
+                }
+            };
 
-            mRepositories.Add(typeof(ClientRepository), () => new ClientRepository());
-            mRepositories.Add(typeof(CurrencyRepository), () => new CurrencyRepository());
-            mRepositories.Add(typeof(OrderItemRepository), () => new OrderItemRepository());
-            mRepositories.Add(typeof(OrderRepository), () => new OrderRepository());
-            mRepositories.Add(typeof(PayrollRepository), () => new PayrollRepository());
-            mRepositories.Add(typeof(ProductRepository), () => new ProductRepository());
-            mRepositories.Add(typeof(VatRepository), () => new VatRepository());
         }
 
 #endregion

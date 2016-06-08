@@ -83,7 +83,7 @@
                         <button class="btn btn-default btn-sm" ng-click="changePrice(product)">Change price!</button>
                     </span>
                     <span ng-show="product.editing">
-                        <input type="text" class="form-control" style="width:100px" ng-model="product.price" />
+                        <input type="number" class="form-control" style="width:100px" ng-model="product.price" />
                         <br />
                         <button class="btn btn-success btn-sm" ng-click="changePrice(product)">Save price!</button>
 
@@ -94,7 +94,7 @@
                     {{product.valueAddedTax.value  | number}}%
                 </td>
                 <td>
-                    {{product.valueAddedTax.value * product.price / 100 + product.price  | number}} {{ui.selectedClient.currency.name}}
+                    {{((product.valueAddedTax.value * product.price / 100) + product.price)  | number}} {{ui.selectedClient.currency.name}}
                 </td>
                 <td>
                     <button class="btn btn-danger" ng-click="deleteProduct(product)">Delete!</button>

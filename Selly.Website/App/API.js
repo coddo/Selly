@@ -57,6 +57,11 @@
                 method: 'GET',
                 isArray: false
             },
+            getOrder: {
+                url: baseUrl + 'order/Get',
+                method: 'GET',
+                isArray: false
+            },
 
             //Products
             getAllProducts: {

@@ -12,13 +12,10 @@ namespace Selly.BusinessLogic.Service
     public class CurrencyUpdaterService
     {
         private const string BASE_CURRENCY = "RON";
-
         private const string CURRENCY_PROVIDER_BASE_URL = "http://api.fixer.io/latest";
         private const string BASE_CURRENCY_PARAMETER_NAME = "base";
         private const string BASE_CURRENCY_PARAMETER_VALUE = BASE_CURRENCY;
-
         private static CurrencyUpdaterService mInstance;
-
         private readonly Timer mTimer;
 
         private CurrencyUpdaterService()
@@ -27,6 +24,22 @@ namespace Selly.BusinessLogic.Service
         }
 
         public static CurrencyUpdaterService Instance => mInstance ?? (mInstance = new CurrencyUpdaterService());
+
+        #region Inline models
+
+        public class CurrencyModel
+        {
+            [JsonProperty("base")]
+            public string Base { get; set; }
+
+            [JsonProperty("date")]
+            public DateTime Date { get; set; }
+
+            [JsonProperty("rates")]
+            public IDictionary<string, double> Rates { get; set; }
+        }
+
+        #endregion
 
         #region Main service logic
 
@@ -51,13 +64,13 @@ namespace Selly.BusinessLogic.Service
 
             var existingCurrencies = await CurrencyCore.GetAllAsync().ConfigureAwait(false);
 
-            if (existingCurrencies == null || existingCurrencies.Count == 0)
+            if (!existingCurrencies.Success || existingCurrencies.Data == null || existingCurrencies.Data.Count == 0)
             {
                 await PopulateCurrencies(currencyData).ConfigureAwait(false);
             }
             else
             {
-                await UpdateCurrencies(existingCurrencies, currencyData).ConfigureAwait(false);
+                await UpdateCurrencies(existingCurrencies.Data, currencyData).ConfigureAwait(false);
             }
         }
 
@@ -114,22 +127,6 @@ namespace Selly.BusinessLogic.Service
             {
                 currency.Multiplier = multiplier;
             }
-        }
-
-        #endregion
-
-        #region Inline models
-
-        public class CurrencyModel
-        {
-            [JsonProperty("base")]
-            public string Base { get; set; }
-
-            [JsonProperty("date")]
-            public DateTime Date { get; set; }
-
-            [JsonProperty("rates")]
-            public IDictionary<string, double> Rates { get; set; }
         }
 
         #endregion

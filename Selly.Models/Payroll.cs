@@ -13,7 +13,7 @@ namespace Selly.Models
     using System.Collections.Generic;
     using Selly.Models.Interfaces;
     
-    public partial class Payroll : IModel
+    public partial class Payroll : Interfaces.ISinglePkModel
     {
         public System.Guid Id { get; set; }
         public System.Guid ClientId { get; set; }
