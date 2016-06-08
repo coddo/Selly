@@ -55,6 +55,9 @@
     <Compile Include="Enums\OrderStatus.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\ISinglePkModel.cs" />
+    <Compile Include="LogEntry.cs">
+      <DependentUpon>SellyModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Order.cs">
       <DependentUpon>SellyModels.tt</DependentUpon>
     </Compile>

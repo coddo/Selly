@@ -32,5 +32,6 @@ namespace Selly.DataLayer
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Currency> Currencys { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<LogEntry> LogEntries { get; set; }
     }
 }

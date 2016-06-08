@@ -20,6 +20,7 @@
         <AssociationConnector Association="SellyModel.FK_Clients_Currencies" />
         <AssociationConnector Association="SellyModel.FK_Orders_Clients" />
         <AssociationConnector Association="SellyModel.FK_Payrolls_Clients" />
+        <EntityTypeShape EntityType="SellyModel.LogEntry" Width="1.5" PointX="10.625" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
