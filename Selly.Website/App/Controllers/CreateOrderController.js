@@ -59,7 +59,7 @@
 
                 HelperService.StopLoading('loadClients');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadClients');
@@ -74,7 +74,7 @@
 
                 HelperService.StopLoading('loadProducts');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadProducts');
@@ -170,7 +170,7 @@
             },
                 function (success) {
 
-                    if (success.isSuccess) {
+                    if (success.success) {
                         $scope.clearCart();
                         HelperService.ShowMessage('alert-success', 'Order placed!');
 

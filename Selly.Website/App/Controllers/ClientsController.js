@@ -31,7 +31,7 @@
                 $scope.clients = success.data;
                 HelperService.StopLoading('loadClients');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadClients');
@@ -47,7 +47,7 @@
 
                 emptyClient();
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadCurrencies');
@@ -80,7 +80,7 @@
                 loadClients();
 
                 HelperService.StopLoading('createUser');
-                if (success.isSuccess)
+                if (success.success)
                     HelperService.ShowMessage('alert-success', 'The user was created successfully!');
                 else
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');

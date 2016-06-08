@@ -17,7 +17,7 @@
                 $scope.client = success.data;
                 HelperService.StopLoading('loadClients');
 
-                if (!success.isSuccess)
+                if (!success.success)
                     HelperService.ShowMessage('alert-danger', 'An error has occured! Try again!');
             }, function (error) {
                 HelperService.StopLoading('loadClients');

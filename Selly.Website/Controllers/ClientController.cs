@@ -38,7 +38,7 @@ namespace Selly.Website.Controllers
                     nameof(Client.Currency)
                 });
 
-                return Json(response);
+                return Ok(response);
             }
             catch (Exception e)
             {
