@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Selly.BusinessLogic.Core;
 using Selly.Models;
+using System.Collections.Generic;
 
 namespace Selly.BusinessLogic.Service
 {
@@ -45,6 +46,12 @@ namespace Selly.BusinessLogic.Service
                     Name = "Cioco Milka",
                     Price = 5.23,
                     VatId = Guid.Parse("0BE69C70-ADF1-4321-B022-20583F207526")
+                },
+                new Product
+                {
+                    Name = "Biscuiti",
+                    Price = 3.1415,
+                    VatId = Guid.Parse("0BE69C70-ADF1-4321-B022-20583F207526")
                 }
             };
 
@@ -53,26 +60,26 @@ namespace Selly.BusinessLogic.Service
                 new Client
                 {
                     Email = "client1@email.com",
-                    FirstName = "Client-First1",
-                    LastName = "Client-Last1"
+                    FirstName = "John",
+                    LastName = "Titor"
                 },
                 new Client
                 {
                     Email = "client2@email.com",
-                    FirstName = "Client-First2",
-                    LastName = "Client-Last2"
+                    FirstName = "Tomoya",
+                    LastName = "Okazaki"
                 },
                 new Client
                 {
                     Email = "client3@email.com",
-                    FirstName = "Client-First3",
-                    LastName = "Client-Last3"
+                    FirstName = "Ion",
+                    LastName = "Popescu"
                 },
                 new Client
                 {
                     Email = "client4@email.com",
-                    FirstName = "Client-First4",
-                    LastName = "Client-Last4"
+                    FirstName = "Maria",
+                    LastName = "Ionescu"
                 }
             };
         }
@@ -91,7 +98,7 @@ namespace Selly.BusinessLogic.Service
                         return;
                     }
 
-                    await ProductCore.CreateAsync(mProducts).ConfigureAwait(false);
+                    var products = await ProductCore.CreateAsync(mProducts, true).ConfigureAwait(false);
 
                     var existingClients = await ClientCore.GetAllAsync().ConfigureAwait(false);
                     if (existingClients.Data != null && existingClients.Data.Count != 0)
@@ -116,7 +123,73 @@ namespace Selly.BusinessLogic.Service
                         client.CurrencyId = currency.Id;
                     }
 
-                    await ClientCore.CreateAsync(mClients).ConfigureAwait(false);
+                    var clients = await ClientCore.CreateAsync(mClients, true).ConfigureAwait(false);
+
+                    var existingOrders = await OrderCore.GetAllAsync().ConfigureAwait(false);
+                    if (existingOrders.Data != null && existingOrders.Data.Count != 0)
+                    {
+                        return;
+                    }
+
+                    int nr = 0;
+                    List<Order> newOrders = new List<Order>();
+                    foreach (var client in clients.Data)
+                    {
+                        if (products.Data.Count >= 6)
+                        {
+                            for (int i = 0; i < 2; i++)
+                            {
+                                nr++;
+                                var o = new Order()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    CurrencyId = currency.Id,
+                                    ClientId = client.Id,
+                                    SaleType = i,
+                                    Status = 0,
+                                    Date = DateTime.Now.AddDays(-nr).AddHours(-nr),
+                                    OrderItems = new List<OrderItem>()
+                                };
+
+                                for (int k = i + nr / 2; k < 6; k += 1)
+                                {
+                                    o.OrderItems.Add(new OrderItem()
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        OrderId = o.Id,
+                                        ProductId = products.Data.ElementAt(k).Id,
+                                        Price = products.Data.ElementAt(k).Price,
+                                        Quantity = k + 1
+                                    });
+                                }
+
+                                newOrders.Add(o);
+                            }
+                        }
+                    }
+
+                    var orders = await OrderCore.CreateAsync(newOrders, true, new[] { nameof(Order.OrderItems) }).ConfigureAwait(false);
+
+                    var payrolls = new List<Payroll>();
+                    if (orders.Data.Count > 3)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            var payroll = new Payroll()
+                            {
+                                Id = Guid.NewGuid(),
+                                ClientId = clients.Data.ElementAt(i).Id,
+                                OrderId = orders.Data.ElementAt(i).Id,
+                                Date = DateTime.Now.AddDays(-i),
+                                Value = orders.Data.ElementAt(i).OrderItems.Sum(p => p.Price * p.Quantity),
+                            };
+
+                            payrolls.Add(payroll);
+                        }
+                    }
+
+                    await PayrollCore.CreateAsync(payrolls, true).ConfigureAwait(false);
+
                 }).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (Exception ex)
