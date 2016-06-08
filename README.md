@@ -24,4 +24,5 @@ By using the Response type (from BLL) with OK status code instead of the classic
 - AngularJS, JQuery, Bootstrap (for UI)
 - Microsoft testing module and FluentAssertions for Unit Tests and Integration Tests
 - ITextSharp for writing documents
+- NLog for logging purposes
 And more on the road
