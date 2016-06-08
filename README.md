@@ -26,3 +26,9 @@ By using the Response type (from BLL) with OK status code instead of the classic
 - ITextSharp for writing documents
 - NLog for logging purposes
 And more on the road
+
+# To make the project and unit tests work, you need to do the following:
+- Create a database named Selly on the local sql server  
+- Create a database named Selly-Tests on the local sql server  
+- Perform a schema compare between the the Selly.Database project and each of the above databases to migrate the structure in them
+- Run the application: Selly.Website and you should have some basic UI (not all functionality is there) and also some mock data generated in the Selly database
